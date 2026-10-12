@@ -2,7 +2,18 @@
 
 > Method: unit economics are taken from **measured neatlogs trace data** (tokens × model
 > price per span), not estimates — the same loop neatlogs demoed for Crashtest.
-> cfo.ai workspace models pricing / costs / revenue / runway. (Plan link: _add after cfo.ai MCP auth._)
+> Built programmatically via the **cfo.ai MCP server** (`https://api.cfo.ai/mcp`).
+
+## Live cfo.ai workspace (Aaryan CFOAI, org 103509)
+
+- **Business plan page:** https://app.cfo.ai/s/p_AQLVqAYkZGJmOWM2NzgtZjcyOS00NTMzLWE3NzYtOGM4YTA4M2VmOTE5DWRlZmF1bHRfbGF5ZXI
+- **Operating model (monthly):** https://app.cfo.ai/s/p_AQLVqAYkMjQ2Zjg0MTktMzRjOS00MzljLWI1YTItZGI3ZTExMThiODE5DWRlZmF1bHRfbGF5ZXI
+- **Unit economics (per-tier):** table `antar unit economics#660`
+
+Tables created via MCP: `antar unit economics` (Free/Pro/Team × price, COGS/run, gross-margin
+formula) and `antar operating model` (monthly: customers → MRR → inference cost → gross profit →
+margin → cash/runway).
+
 
 ## 1. What one run costs (from traces)
 

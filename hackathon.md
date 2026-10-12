@@ -66,6 +66,13 @@ codebase and the current literature, and reports it with evidence.
 - **PR #26 OPEN** on antar-demo-target: "Add gradient clipping to trainer" — the
   harness-learning fix (clip_grad_norm_ added, compiles), owner-scoped, traced.
 
+### 2026-10-12 (cfo.ai business plan via MCP — EV-4)
+- Registered cfo.ai as a Hermes MCP server (`https://api.cfo.ai/mcp`, OAuth) → 34 tools.
+- Built the business plan programmatically: `antar unit economics` (Free/Pro/Team × price,
+  COGS/run, gross-margin formula) + `antar operating model` (monthly: customers→MRR→cost→
+  profit→margin→cash/runway) + a narrative page. Live links in docs/BUSINESS-PLAN.md.
+- Unit economics anchored to measured neatlogs trace cost/run.
+
 ## Demo
 - URL/instructions: TBD. Offline fallback = pre-cached golden run in `examples/`.
 - Live demo repo: https://github.com/guglxni/antar-demo-target (11 agent-opened issues).
