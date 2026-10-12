@@ -42,7 +42,9 @@ class Gap:              # a claimed gap (pre-verification)
 
 ### scan (AST)
 - Parse each `.py` with `ast.parse`. Walk the tree.
-- Match against `knowledge/ml-techniques-taxonomy.md` patterns:
+- Match against the built-in technique signature table in `tools/ast_scan.py`
+  (an embedded taxonomy of optimizer / scheduler / regularizer / architecture / precision
+  patterns — e.g. `torch.optim.AdamW`, `clip_grad_norm_`, `CosineAnnealing`, `autocast`):
   - `Call` nodes: `torch.optim.AdamW`, `SGD`, `clip_grad_norm_`, ...
   - `Attribute`/`Name` heuristics for schedulers, mixed precision, etc.
 - Emit `Technique` list w/ evidence. Confidence from match strength.

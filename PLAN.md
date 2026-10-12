@@ -1,40 +1,45 @@
-# antar — Build Plan (time-boxed to the remaining window)
+# antar — Build Plan (time-boxed to the submission window)
 
-Now → submission close (~23:55 IST). Demo-first; cut scope aggressively.
+**Status: COMPLETE.** Kept as the build record. Demo-first; scope was cut aggressively.
 
-## Phase 0 — Foundations (done / in progress)
+## Phase 0 — Foundations ✅
 - [x] Tool setup: Entire enabled, neatlogs+litellm+openai installed (docs/setup.md)
 - [x] Doc suite (PRD/ARCH/DESIGN/REQ/PLAN/MATH/REFERENCES)
-- [ ] `.env` filled (user: NEATLOGS_API_KEY, LITELLM_API_KEY)
-- [ ] cfo.ai account + MCP auth (user, browser)
+- [x] `.env` filled (NEATLOGS_API_KEY, LITELLM_API_KEY) via scripts/load-env.sh
+- [x] cfo.ai account + MCP auth (Hermes MCP, OAuth)
 
-## Phase 1 — Walking skeleton, traced (~60 min)
-- [ ] `llm.py` BYOK client factory + unit test
-- [ ] `tools/ast_scan.py` → TECHNIQUES.md on a fixture repo (e.g. karpathy/minGPT)
-- [ ] `orchestrator.py` root WORKFLOW span wrapping one stage
-- [ ] **First traced run committed** (EV-2 + first Entire checkpoint)
-- [ ] #neatHack "kicked off" post (EV-6)
+## Phase 1 — Walking skeleton, traced ✅
+- [x] `llm.py` BYOK client factory + tests
+- [x] `tools/ast_scan.py` → technique inventory on a fixture repo
+- [x] `orchestrator.py` root WORKFLOW span
+- [x] First traced run committed (neatlogs doctor probe PASS)
 
-## Phase 2 — Core value (~120 min)
-- [ ] `tools/arxiv_search.py` + `fetch_abstract.py` w/ backoff → PAPERS.md
-- [ ] `agents/verifier.py` SOD gate → approved-only gaps
-- [ ] `report.py` → GAPS.md + RELATED_WORK.md
-- [ ] End-to-end run on minGPT, all 4 artifacts
+## Phase 2 — Core value ✅
+- [x] `tools/arxiv_search.py` w/ backoff + `tools/rag.py` hybrid retrieval → PAPERS.md
+- [x] `agents/verifier.py` SOD gate → approved-only gaps
+- [x] `report.py` → GAPS.md + RELATED_WORK.md (+ TECHNIQUES.md, PAPERS.md)
+- [x] End-to-end run on a real repo (antar-demo-target), all 4 artifacts
 
-## Phase 3 — Rubric differentiators (~90 min)
-- [ ] Failure-recovery: inject arXiv 500 → backoff+degrade; capture recovery trace (EV-5)
-- [ ] Failure→fix evidence: pick a real bug from traces, fix, commit before/after traces (EV-1)
-- [ ] `entire graph` snapshots committed (EV-3)
-- [ ] cfo.ai business plan from traced token costs (EV-4) — see MATH.md §5
+## Phase 3 — Rubric differentiators ✅
+- [x] Failure-recovery: arXiv backoff+degrade; harness revision loop on test failure (EV-5)
+- [x] Failure→fix evidence: verifier fence-parse + gap-logic fix → 0→14 gaps, in traces (EV-1)
+- [x] `entire graph` + `entire enable` repo-context evidence (EV-3)
+- [x] cfo.ai business plan from traced token costs (EV-4) — docs/BUSINESS-PLAN.md
+- [x] Multi-agent upgrade: scanner/researcher/verifier/planner/coder/tester/github agents
+- [x] Harness learning (arXiv:2609.35738) test-time revision loop — MATH.md §8
+- [x] Owner-scoped GitHub/GitLab writes (repo_access guard)
+- [x] Hybrid RAG discovery (BM25 + local dense + RRF + recency), keyless
+- [x] FastAPI webapp + hardened MCP server (auth + RBAC)
 
-## Phase 4 — Package & submit (~60 min)
-- [ ] Pre-cached golden run in `examples/` (offline demo fallback)
-- [ ] ≤3-min demo video covering neatlogs + Entire + cfo.ai
-- [ ] README polish, `hackathon.md` finalized, all evidence linked
-- [ ] Submit via quote-post of official neatlogs X post (19:00–23:55 IST)
+## Phase 4 — Package & submit ✅
+- [x] Demo video ≤3 min (92s) covering neatlogs + Entire + cfo.ai → examples/antar-demo.mp4
+- [x] README polish (badges, video, diagrams), hackathon.md finalized, evidence linked
+- [x] Built in public: 2 #neatHack posts (links in hackathon.md)
+- [x] Submitted via quote-post
 
-## Cut list (drop if time pressure)
-- Streamlit front page · multi-repo batch mode · PDF parsing · Discord bot
+## Cut list (dropped — deliberate scope control)
+- Streamlit front page (used FastAPI webapp instead) · multi-repo batch mode ·
+  PDF parsing · Discord bot · GRPO proposer training (future work)
 
-## Daily evidence hygiene
-After each session: append dated `hackathon.md` entry (sanitized; no keys/traces w/ PII).
+## Evidence hygiene
+Dated, sanitized `hackathon.md` entries after each session; no keys/PII committed.

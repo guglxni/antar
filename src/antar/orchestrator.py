@@ -12,6 +12,7 @@ import neatlogs
 
 from .agents import github_ops, harness, planner, verifier
 from .llm import get_client, init_tracing
+from .report import write_reports
 from .state import RunState
 from .tools import arxiv_search, ast_scan, repo_intake
 
@@ -147,6 +148,10 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
                                  error=str(e), gap=g["technique"])
         state.prs = prs
         state.advance("done", STATE_PATH)
+
+        # 5. REPORT — emit the 4 markdown artifacts (docs/README promise these)
+        artifacts = write_reports(state, out_dir=f"{repo_path}/antar-out" if local.host == "local" else "antar-out")
+        neatlogs.log("reports written", artifacts=list(artifacts))
 
     return RunReport(len(techniques), n_papers, len(approved), issues, prs)
 

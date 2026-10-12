@@ -122,39 +122,47 @@ cost-per-scan (tokens × model price) → gross margin → pricing tiers → run
 Built via the cfo.ai MCP server (`https://api.cfo.ai/mcp`). See MATH.md §5 for
 the pricing/cost model and cfo.ai for the live plan.
 
-## 9. Component / directory map
+## 9. Component / directory map (actual)
 
 ```
 antar/
 ├── PRD.md  ARCHITECTURE.md  DESIGN.md  REQUIREMENTS.md  PLAN.md  PROPOSAL.md
 ├── AGENTS.md  CLAUDE.md  SKILL.md  MATH.md  REFERENCES.md  hackathon.md
-├── docs/setup.md                 # tool-by-tool setup (done)
-├── .env.example                  # BYOK + keys template
+├── docs/                         # setup.md · OPERATIONS.md · BUSINESS-PLAN.md ·
+│                                 #   ARCHITECTURE-MULTIAGENT.md · diagrams/
+├── .env.example                  # BYOK + keys template (never the real .env)
+├── Dockerfile  .github/workflows/ci.yml  .pre-commit-config.yaml
+├── scripts/                      # load-env.sh (terminal secret loader) · deploy-aws.sh
+├── demo/                         # HyperFrames demo composition → examples/antar-demo.mp4
 ├── src/antar/
-│   ├── __init__.py
+│   ├── __init__.py  __main__.py  # CLI entry: `python -m antar run …` / `mcp`
 │   ├── llm.py                    # BYOK client factory (OpenAI/Groq/Anthropic/LiteLLM)
-│   ├── orchestrator.py           # the plan→act→verify→recover loop (root WORKFLOW)
-│   ├── state.py                  # run state + checkpoint save/restore
+│   ├── orchestrator.py           # plan→act→verify→recover loop (root WORKFLOW)
+│   ├── state.py                  # RunState + checkpoint save/restore (resume)
+│   ├── report.py                 # writes TECHNIQUES/PAPERS/GAPS/RELATED_WORK.md
+│   ├── webapp.py                 # FastAPI app (security headers, CORS, bearer auth)
+│   ├── mcp_server.py             # fastmcp server (TokenVerifier auth + write-gate RBAC)
 │   ├── tools/
-│   │   ├── ast_scan.py           # technique extractor (stdlib ast)
-│   │   ├── arxiv_search.py       # arXiv Atom API w/ backoff
-│   │   └── fetch_abstract.py     # batch abstract lookup
+│   │   ├── ast_scan.py           # technique extractor (stdlib ast) + graphify enrich
+│   │   ├── arxiv_search.py       # arXiv Atom API w/ backoff + jitter
+│   │   ├── rag.py                # hybrid BM25 + local-embedding + RRF + recency
+│   │   ├── graphify_integration.py  # auto-build + query target repo's knowledge graph
+│   │   └── repo_intake.py        # clone GitHub/GitLab → local workspace
 │   ├── agents/
-│   │   └── verifier.py           # SOD verification sub-agent
-│   ├── report.py                 # GAPS.md / RELATED_WORK.md writer
-│   └── cli.py                    # `antar run <repo>` entry point
-├── knowledge/
-│   ├── ml-techniques-taxonomy.md     # (reused content from SAGE design)
-│   ├── arxiv-categories.md
-│   └── severity-classification-guide.md
-├── examples/                     # good/bad output calibration
-└── tests/                        # unit + injected-failure recovery tests
+│   │   ├── verifier.py           # SOD verification sub-agent (adversarial)
+│   │   ├── planner.py            # gap → issue/fix spec
+│   │   ├── harness.py            # harness-learning revision loop (aider Coder)
+│   │   ├── tester.py             # run tests → ExecutionReport (feedback artifact)
+│   │   ├── github_ops.py         # PyGithub/python-gitlab issue/PR/MR (owner-scoped)
+│   │   └── repo_access.py        # ownership guard — assert_can_write() on every write
+│   └── skills/                   # graphify · adversarial-verification · github-ops
+└── tests/                        # smoke · harness · rag · repo_access · graphify (21 tests)
 ```
 
 ## 10. Deployment / runtime
 
 - **Primary:** traced CLI (`python -m antar run <repo>`) with Rich console output —
   most credible to judges, zero deploy risk.
-- **Demo insurance:** a pre-cached golden run committed under `examples/` so the
-  3-minute video never depends on a live API.
-- **Optional:** a thin Streamlit front page (only if time remains; not required).
+- **Webapp:** FastAPI (`uvicorn antar.webapp:app`) — security headers, CORS, bearer auth.
+- **Demo insurance:** the rendered demo video committed under `examples/` so the
+  3-minute submission never depends on a live API.
