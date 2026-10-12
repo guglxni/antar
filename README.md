@@ -111,6 +111,9 @@ antar ran end-to-end on [`guglxni/antar-demo-target`](https://github.com/guglxni
   *"Implement δ-GClip (Regularized Gradient Clipping)"*, *"Add gradient clipping to trainer for
   improved convergence."*
 - **PR mode** runs the harness-learning loop (arXiv:2609.35738): propose → test → revise → push → PR.
+  **[PR #26](https://github.com/guglxni/antar-demo-target/pull/26) is open** — the verified
+  gradient-clipping fix (`clip_grad_norm_` added, compiles), coded by the harness loop via the
+  LiteLLM gateway, owner-scoped and traced.
 
 Every run is a neatlogs trace; every commit an Entire checkpoint. A real failure→fix cycle
 (verifier JSON-fence parsing, missing-vs-present gap logic) was caught in traces and fixed —

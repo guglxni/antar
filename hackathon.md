@@ -56,6 +56,16 @@ codebase and the current literature, and reports it with evidence.
   gap logic flaw → fixed → verified_gaps went 0 → 14. (EV-1 improvement evidence.)
 - PR mode (harness-learning fix + PR) running.
 
+### 2026-10-12 (PR loop proven + aider routing fixed)
+- PR mode ran the full loop; opened 25 issues total across runs.
+- Found + fixed an aider routing bug: bare `claude-haiku` model string → litellm
+  "LLM Provider NOT provided". Fix: prefix with provider (`openai/claude-haiku`) and force
+  `OPENAI_API_BASE`/`OPENAI_API_KEY` so a stray global `~/.aider.conf.yml` can't hijack routing.
+- Verified the programmatic aider `Coder` path applies a real edit via the LiteLLM gateway
+  (clip 1.0→0.9, 951/215 tokens traced).
+- **PR #26 OPEN** on antar-demo-target: "Add gradient clipping to trainer" — the
+  harness-learning fix (clip_grad_norm_ added, compiles), owner-scoped, traced.
+
 ## Demo
 - URL/instructions: TBD. Offline fallback = pre-cached golden run in `examples/`.
 - Live demo repo: https://github.com/guglxni/antar-demo-target (11 agent-opened issues).
