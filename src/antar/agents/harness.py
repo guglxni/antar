@@ -30,15 +30,21 @@ _MAX_REVISIONS = 3
 
 
 def _aider_model_string() -> str:
-    """Resolve the model + force the OpenAI-compatible gateway env for aider.
+    """Resolve the model for aider with an explicit provider prefix + gateway env.
 
-    IMPORTANT: we override (not setdefault) so a stray global ~/.aider.conf.yml or
-    pre-existing env cannot hijack routing to a local/HF model."""
+    aider routes via litellm, which needs a provider prefix (e.g. `openai/…`) to know
+    which backend to call. We prefix with `openai/` (OpenAI-compatible) and force
+    OPENAI_API_BASE/KEY so a stray global ~/.aider.conf.yml can't hijack routing.
+    """
     cfg = resolve_config()
     if cfg.base_url:
         os.environ["OPENAI_API_BASE"] = cfg.base_url
         os.environ["OPENAI_API_KEY"] = cfg.api_key
-    return cfg.model
+    model = cfg.model
+    # litellm needs a provider prefix; OpenAI-compatible backends use `openai/<model>`.
+    if "/" not in model:
+        model = f"openai/{model}"
+    return model
 
 
 @dataclass
