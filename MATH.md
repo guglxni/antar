@@ -114,6 +114,11 @@ between a demo that fails live and one that doesn't.** This justifies the recove
 
 ## §8. Harness learning — test-time adaptation (arXiv:2609.35738)
 
+> **This is the core of antar's coder.** The agent improves at test time by revising its
+> harness from execution feedback — no weight updates. See the
+> [revision-loop diagram](docs/diagrams/harness-loop.svg) and
+> [ARCHITECTURE-MULTIAGENT §3a](docs/ARCHITECTURE-MULTIAGENT.md).
+
 The Coder's self-correction loop is the paper's inner meta-learning loop, used at inference
 time (proposer & solver frozen). The adaptation objective over $T$ rounds:
 

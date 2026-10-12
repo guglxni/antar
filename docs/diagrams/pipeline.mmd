@@ -1,0 +1,39 @@
+flowchart TD
+    A["🎯 Goal: close the code↔literature gap<br/>for &lt;target repo&gt;"] --> ORCH
+
+    subgraph ORCH["ORCHESTRATOR — plan → dispatch → settle → report (root WORKFLOW span)"]
+        direction TB
+        P1["decompose goal"] --> P2["dispatch workers"]
+        P2 --> P3["settle disagreements"]
+        P3 --> P4["compose report"]
+    end
+
+    ORCH --> INTAKE["📥 repo_intake<br/>clone GitHub/GitLab → local workspace"]
+    INTAKE --> SCAN["🔍 Scanner<br/>stdlib AST + graphify graph<br/>→ TECHNIQUES (file:line evidence)"]
+    SCAN --> RES["📚 Researcher<br/>arXiv API (backoff+jitter)<br/>→ ranked PAPERS"]
+    RES --> VER{"🛡️ Verifier (SOD)<br/>adversarially DISPROVE each gap"}
+
+    VER -->|"REJECTED / UNCERTAIN"| REJ["logged —<br/>overturned, not hidden"]
+    VER -->|"APPROVED"| PLAN["🗺️ Planner<br/>gap → FixPlan (issue spec)"]
+
+    PLAN --> GH_ISSUE["🐙 GitHub/GitLab<br/>create_issue()<br/>(owner-scoped)"]
+    PLAN --> HARNESS
+
+    subgraph HARNESS["⚙️ HarnessRevisionLoop — arXiv:2609.35738 §4.2"]
+        direction TB
+        X["x_t = {fix, current harness, execution report}"] --> PROP["proposer (aider)<br/>applies candidate fix"]
+        PROP --> EXEC["▶️ Tester runs test_cmd"]
+        EXEC --> REP["📋 ExecutionReport<br/>score · failing traces · history"]
+        REP --> DEC{"tests pass?"}
+        DEC -->|"no → report feeds next revision"| PROP
+        DEC -->|"yes"| DONE["✓ retained"]
+    end
+
+    HARNESS -->|"tests pass"| GH_PR["🐙 push branch →<br/>create_pull() / MR<br/>(owner-scoped)"]
+    GH_PR --> OUT["📄 GAPS.md · RELATED_WORK.md<br/>+ ISSUE # · PR #"]
+    GH_ISSUE --> OUT
+
+    style VER fill:#fff3cd,stroke:#d4a017,stroke-width:2px
+    style HARNESS fill:#e8f0fe,stroke:#1a73e8,stroke-width:2px
+    style ORCH fill:#f3e8fd,stroke:#8e44ad,stroke-width:2px
+    style REJ fill:#fdecea,stroke:#c0392b

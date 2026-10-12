@@ -1,0 +1,72 @@
+<mxfile host="app.diagrams.net" agent="antar" version="24.0.0">
+  <diagram id="antar-arch" name="antar-architecture">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="antar — multi-agent system (model + harness, arXiv:2609.35738)" style="text;html=1;fontSize=20;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="330" y="20" width="520" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="orch" value="ORCHESTRATOR&#10;plan → dispatch → settle → report&#10;root WORKFLOW span · Entire RunState checkpoint/stage" style="rounded=1;fillColor=#f3e8fd;strokeColor=#8e44ad;fontSize=12;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="450" y="70" width="280" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="intake" value="repo_intake&#10;clone GitHub/GitLab → workspace" style="rounded=1;fillColor=#eef3fb;strokeColor=#5b7fa6;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="60" y="190" width="180" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="scan" value="Scanner&#10;stdlib AST + graphify graph&#10;→ TECHNIQUES (file:line)" style="rounded=1;fillColor=#e8f0fe;strokeColor=#1a73e8;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="270" y="190" width="180" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="research" value="Researcher&#10;arXiv (backoff+jitter)&#10;→ ranked PAPERS" style="rounded=1;fillColor=#e8f0fe;strokeColor=#1a73e8;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="480" y="190" width="170" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="verify" value="Verifier (SOD)&#10;adversarially DISPROVE&#10;APPROVED / REJECTED / UNCERTAIN" style="rounded=1;fillColor=#fff3cd;strokeColor=#d4a017;fontSize=11;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="680" y="190" width="200" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="planner" value="Planner&#10;gap → FixPlan (issue spec)" style="rounded=1;fillColor=#e8f0fe;strokeColor=#1a73e8;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="920" y="190" width="180" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="harness" value="HarnessRevisionLoop (paper §4.2)&#10;x_t={fix, harness, exec report} → aider applies fix&#10;→ Tester runs tests → ExecutionReport → feedback → revise (≤3)" style="rounded=1;fillColor=#e8f0fe;strokeColor=#1a73e8;fontSize=11;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="450" y="320" width="300" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="github" value="GitHub / GitLab (OWNER-SCOPED)&#10;create_issue() · push branch · create_pull()/MR&#10;repo_access.assert_can_write() on every write" style="rounded=1;fillColor=#e6f4ea;strokeColor=#188038;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="790" y="320" width="300" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="output" value="GAPS.md · RELATED_WORK.md · ISSUE # · PR #" style="rounded=1;fillColor=#ffffff;strokeColor=#444;fontSize=12;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="470" y="450" width="260" height="44" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="obs" value="Cross-cutting observability &amp; history" style="text;html=1;fontSize=13;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="450" width="320" height="22" as="geometry"/>
+        </mxCell>
+        <mxCell id="neatlogs" value="neatlogs — every run a trace, every step a span&#10;(tokens · cost · latency · recovery)" style="rounded=1;fillColor=#e8f0fe;strokeColor=#1a73e8;fontSize=10;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="60" y="480" width="250" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="entire" value="Entire — every commit a checkpoint&#10;entire graph → repo map (evidence)" style="rounded=1;fillColor=#e6f4ea;strokeColor=#188038;fontSize=10;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="60" y="536" width="250" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="cfo" value="cfo.ai — traced token cost → pricing / margin / runway" style="rounded=1;fillColor=#fef7e0;strokeColor=#f9ab00;fontSize=10;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="60" y="592" width="250" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="mcp" value="antar as MCP server&#10;scan_repo · find_gaps · open_issues · fix_gap" style="rounded=1;dashed=1;fillColor=#ffffff;strokeColor=#888;fontSize=10;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="900" y="480" width="220" height="48" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="scan"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="intake" target="scan"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="scan" target="research"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="research" target="verify"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;label=APPROVED;" edge="1" parent="1" source="verify" target="planner"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="planner" target="harness"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="harness" target="github"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="github" target="output"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

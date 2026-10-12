@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph OBS["Observability & history (cross-cutting)"]
+        NL["🔭 neatlogs<br/>every run → trace<br/>every step → span<br/>tokens · cost · latency"]
+        EN["🧷 Entire<br/>every commit → checkpoint<br/>entire graph → repo map"]
+        CFO["📊 cfo.ai<br/>traced token cost →<br/>pricing · margin · runway"]
+    end
+
+    RUN["antar run"] --> NL
+    DEV["development commits"] --> EN
+    NL -->|"measured unit cost/scan"| CFO
+
+    NL --> E1["EV: before/after traces<br/>+ failure→fix + recovery"]
+    EN --> E2["EV: checkpoints +<br/>entire graph output"]
+    CFO --> E3["EV: business plan<br/>(pricing/cost/runway)"]
+
+    style NL fill:#e8f0fe,stroke:#1a73e8
+    style EN fill:#e6f4ea,stroke:#188038
+    style CFO fill:#fef7e0,stroke:#f9ab00

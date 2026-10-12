@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph DUTY["Segregation of Duties — no agent confirms its own work"]
+        direction LR
+        RES["📚 Researcher<br/>proposes gap<br/>+ citation"] -->|"claim + paper + evidence"| VER["🛡️ Verifier<br/>(separate context)<br/>tries to DISPROVE"]
+        VER -->|"APPROVED"| OK["ships to GAPS.md / issue"]
+        VER -->|"REJECTED / UNCERTAIN"| OUT["excluded —<br/>logged, not hidden"]
+
+        COD["💻 Coder<br/>writes the fix"] -->|"branch + diff"| TST["🧪 Tester<br/>runs tests"]
+        TST -->|"pass"| PR["PR opened"]
+        TST -->|"fail"| COD
+    end
+
+    Note["Precision model (MATH §4):<br/>P(valid | APPROVED) = s·p₀ / (s·p₀ + (1−c)(1−p₀)) ≈ 0.98<br/>at verifier specificity c→0.97"] -.-> DUTY
+
+    style VER fill:#fff3cd,stroke:#d4a017,stroke-width:2px
+    style TST fill:#fff3cd,stroke:#d4a017,stroke-width:2px
+    style OUT fill:#fdecea,stroke:#c0392b

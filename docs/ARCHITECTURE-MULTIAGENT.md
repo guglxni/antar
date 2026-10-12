@@ -6,6 +6,13 @@
 
 ## 1. Agent topology
 
+<p align="center"><img src="diagrams/architecture.svg" alt="antar architecture" width="1000"/></p>
+
+> **Research foundation.** antar's coder implements the test-time adaptation loop from
+> *Harness Learning Enables Generalizable Test-Time Adaptation* (arXiv:2609.35738) — see §3a
+> below and MATH.md §8. The agent improves by revising its **harness** from **execution
+> feedback**, not by touching model weights.
+
 ```
                         ┌─────────────────────────────────────────┐
                         │           ORCHESTRATOR (coordinator)     │
@@ -93,6 +100,12 @@ adopts the paper's *test-time inference loop* (we keep solver & proposer frozen 
 This is the "self-improving / recovers-from-failure" evidence: a neatlogs trace showing
 `rev 1: FAIL → diagnosis → rev 2: PASS`. We implement the **inference-time** loop only;
 training the proposer with GRPO (paper §4.3) is future work, noted in LIMITATIONS.
+
+<p align="center"><img src="diagrams/harness-loop.svg" alt="harness revision loop" width="820"/></p>
+
+The verification / segregation-of-duties model:
+
+<p align="center"><img src="diagrams/sod-verification.svg" alt="verification SOD" width="820"/></p>
 
 ## 4. antar AS an MCP server
 

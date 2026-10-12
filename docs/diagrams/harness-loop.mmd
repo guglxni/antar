@@ -1,0 +1,29 @@
+sequenceDiagram
+    autonumber
+    participant O as Orchestrator
+    participant P as Proposer (aider)
+    participant T as Tester
+    participant N as neatlogs
+
+    Note over O,T: Harness learning — test-time adaptation (arXiv:2609.35738 §4.2)
+    O->>N: trace("antar-run", WORKFLOW)
+
+    loop T rounds (revision budget ≤ 3)
+        O->>P: x_t = { fix_summary, harness, execution_report }
+        P->>P: propose candidate edit y_i (SEARCH/REPLACE)
+        P->>O: Apply(h_{t-1}, y_i) → revised harness h'_i
+        O->>T: run test_cmd on h'_i
+        T->>T: score = fraction of tests passing (Eq. 3)
+        T-->>O: ExecutionReport { score, failing traces, history }
+        O->>N: span(revision_t) { score, returncode }
+
+        alt tests pass (score = 1.0)
+            O->>O: Select: retain h_t ✓
+            Note over O: break — proceed to PR
+        else tests fail
+            O->>P: feed ExecutionReport back as x_{t+1}
+            Note over O,P: diagnosis → targeted revision
+        end
+    end
+
+    O->>N: log(harness_revision_done, success, revisions)
