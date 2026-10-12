@@ -10,6 +10,12 @@ It reads your repo's knowledge graph, hunts arXiv, **adversarially verifies** ev
 
 `MIT` · `Python 3.11` · `neatlogs` · `Entire` · `cfo.ai` · **neatHack 2026**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-22d3ee.svg)](LICENSE)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-1a73e8.svg)](pyproject.toml)
+[![CI](https://github.com/guglxni/antar/actions/workflows/ci.yml/badge.svg)](https://github.com/guglxni/antar/actions)
+[![Research](https://img.shields.io/badge/arXiv-2609.35738-a78bfa.svg)](https://arxiv.org/abs/2609.35738)
+[![PRs](https://img.shields.io/badge/demos-25%20issues%20%C2%B7%20PR%20%2326-34d399.svg)](https://github.com/guglxni/antar-demo-target)
+
 [**Architecture**](#architecture) · [**The research**](#grounded-in-research) · [**Quick start**](#quick-start) · [**Docs**](#documentation)
 
 ## Demo
