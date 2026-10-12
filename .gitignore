@@ -25,3 +25,4 @@ build/
 # large third-party clones (reference only)
 /_ref/
 graphify-out/
+.antar/workspaces/
