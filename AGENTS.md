@@ -1,8 +1,7 @@
 # AGENTS.md — operating guide for AI coding agents in this repo
-# (STAGED — rename to AGENTS.md to activate; that file is approval-gated)
 
-You are helping build **antar** under a hackathon deadline. Read `PRD.md`,
-`ARCHITECTURE.md`, and `DESIGN.md` first. This file is the source of truth for *how* to work here.
+You are helping build **antar**. Read `PRD.md`, `ARCHITECTURE.md`, and `DESIGN.md` first.
+This file is the source of truth for *how* to work here.
 
 ## Hard rules (never violate)
 
@@ -13,27 +12,25 @@ You are helping build **antar** under a hackathon deadline. Read `PRD.md`,
    Do not disable the hooks. Do not `git commit --no-verify`.
 4. **Never commit secrets.** `.env` is gitignored. Keys live only in env vars / `.env`.
    If you see a key in a diff, stop and refuse to commit it.
-5. **Verifier is mandatory.** No gap reaches `report.py` without `verdict == "APPROVED"`.
-6. **Advisory only.** antar never writes to the *target* repository it analyzes.
-7. **Recover, don't abort.** Tool failures route through the recovery policy
-   (DESIGN.md §6). A stage must degrade, not silently kill the run.
+5. **Verifier is mandatory.** No gap ships without `verdict == "APPROVED"`.
+6. **Owner-scoped writes only.** Issues/PRs only on repos the identity owns
+   (`repo_access.assert_can_write`).
+7. **Recover, don't abort.** Tool failures route through the recovery policy (DESIGN.md §6).
 
-## Repo context tools (use them)
+## Repo context tools
 
 ```bash
 entire graph search "arxiv query construction"     # find code by meaning
 entire graph impact --symbol arxiv_search          # what breaks if I change this
 entire checkpoint list                             # history of changes
-git log --oneline                                  # Entire-Checkpoint trailers attached
 ```
 
-## Coding conventions
+## Conventions
 
 - Python 3.11, `uv` for deps. Type hints + `dataclasses`.
-- Stdlib `ast` only for scanning — **no heavy tree-sitter dep** in the shipped tool.
-- `rich` for console. Small functions; one responsibility per module.
-- Tests: `pytest`. Every FR in REQUIREMENTS.md has a test. Recovery paths need an
-  *injected-failure* test (mock a 500 / timeout and assert the run still completes).
+- Stdlib `ast` for scanning. `rich` for console. Small single-responsibility modules.
+- Tests: `pytest`. Every FR in REQUIREMENTS.md has a test; recovery paths need an
+  injected-failure test.
 
 ## Definition of done (per feature)
 
