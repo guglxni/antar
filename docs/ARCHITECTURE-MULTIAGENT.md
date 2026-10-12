@@ -112,7 +112,18 @@ another orchestrator (or Claude Code) can drive it. **Open-sourceable** as-is (M
 - **Entire:** `entire enable` on antar's repo (done); each commit a checkpoint.
 - **cfo.ai:** unit cost now includes *issue + PR authoring* tokens, not just scan.
 
-## 8. Modes & scope control
+## Guardrails: OWNER-SCOPED WRITES (hard boundary)
+
+Issues/PRs/pushes are allowed **only** on repos the authenticated identity owns:
+- **GitHub:** `repo.owner.login == authenticated_user.login` AND `permissions.push/admin/maintain`.
+- **GitLab:** `access_level >= DEVELOPER` (30) from project/group membership.
+
+`agents/repo_access.assert_can_write()` enforces this on **every** write and raises
+`OwnershipError` otherwise. Verified live: a repo you don't own (e.g. `karpathy/minGPT`)
+is refused. PR mode additionally requires `--mode pr --allow-pr` + `GITHUB_TOKEN` (or
+`GITLAB_TOKEN`), a `--max-prs` cap, and dry-run by default.
+
+## Modes & scope control
 
 | Mode | Flag | Behaviour |
 |---|---|---|

@@ -15,6 +15,7 @@ dependencies = [
     "litellm",
     "python-dotenv",
     "PyGithub>=2.0",
+    "python-gitlab>=4.0",
     "aider-chat",
     "fastmcp>=3.0",
     "rich",
