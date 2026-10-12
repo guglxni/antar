@@ -82,7 +82,10 @@ codebase and the current literature, and reports it with evidence.
 - Next: walking skeleton → core value → rubric differentiators → package (see PLAN.md).
 
 ## Submission
-- [ ] public repo, commits in window
-- [ ] demo video ≤3 min (covers neatlogs/Entire/cfo.ai)
-- [ ] evidence: traces (EV-1,2,5), Entire checkpoints+graph (EV-3), cfo.ai plan (EV-4), #neatHack posts (EV-6)
-- [ ] quote-post submission before cutoff
+- [x] public repo, commits in window (18+, Oct 12)
+- [x] demo video ≤3 min (92s, covers neatlogs/Entire/cfo.ai) — `examples/antar-demo.mp4`
+- [x] evidence: traces (EV-1,2,5), Entire checkpoints+graph (EV-3), cfo.ai plan (EV-4)
+- [x] built in public (#neatHack):
+  - submission quote-post: https://x.com/guglaniaaryan/status/2109710658594074713
+  - building-in-public post: https://x.com/guglaniaaryan/status/2109709807125217589
+- [x] quote-post submission before cutoff

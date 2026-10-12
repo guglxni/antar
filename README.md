@@ -12,6 +12,17 @@ It reads your repo's knowledge graph, hunts arXiv, **adversarially verifies** ev
 
 [**Architecture**](#architecture) · [**The research**](#grounded-in-research) · [**Quick start**](#quick-start) · [**Docs**](#documentation)
 
+## Demo
+
+https://github.com/guglxni/antar/raw/main/examples/antar-demo.mp4
+
+> 90s — the full agent loop, segregation-of-duties verification, harness-learning
+> self-correction (arXiv:2609.35738), and the neatHack trio. Watch it above.
+
+**Built in public** on X ([#neatHack](https://x.com/hashtag/neatHack)):
+- [Submission](https://x.com/guglaniaaryan/status/2109710658594074713) — the quote-post
+- [The story](https://x.com/guglaniaaryan/status/2109709807125217589) — the agent rejecting its own hallucinated finding
+
 </div>
 
 ---
