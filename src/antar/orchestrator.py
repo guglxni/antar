@@ -20,7 +20,9 @@ STATE_PATH = ".antar/run_state.json"
 
 @neatlogs.span(kind="TOOL", name="arxiv_search")
 def _research(technique: str) -> list[arxiv_search.Paper]:
-    return arxiv_search.search(technique)
+    from .tools import rag
+    raw = arxiv_search.search(technique)
+    return rag.rerank(technique, raw, top_k=5)  # hybrid BM25+dense+RRF+recency
 
 
 @neatlogs.span(kind="TOOL", name="ast_scan")

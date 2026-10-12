@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv + deps
+        run: |
+          pip install uv
+          uv venv && . .venv/bin/activate
+          uv pip install -e . rank_bm25 fastapi "uvicorn[standard]"
+      - name: Lint (ruff)
+        run: uvx ruff check src || true
+      - name: Type check (mypy, advisory)
+        run: uvx mypy src/antar --ignore-missing-imports || true
+      - name: Tests
+        run: . .venv/bin/activate && python -m pytest -q
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t antar:ci .
+      - name: Hadolint (Dockerfile lint)
+        run: docker run --rm -i hadolint/hadolint < Dockerfile || true

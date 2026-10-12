@@ -20,6 +20,11 @@ dependencies = [
     "fastmcp>=3.0",
     "rich",
     "pytest",
+    # RAG / webapp
+    "rank_bm25>=0.2",
+    "sentence-transformers>=3.0",   # local embeddings (bge-small) — no API key
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
 ]
 
 [project.scripts]
