@@ -99,6 +99,23 @@ no agent ever confirms its own work:
   <img src="docs/diagrams/observability.svg" alt="observability" width="760"/>
 </p>
 
+## Demo (live-verified)
+
+antar ran end-to-end on [`guglxni/antar-demo-target`](https://github.com/guglxni/antar-demo-target)
+(a minimal trainer deliberately missing gradient clipping):
+
+- **Scan** detected AdamW + cosine annealing + mixed precision — and that `gradient_clipping` is **absent**.
+- **Research** pulled 70 arXiv candidates via the hybrid BM25 + local-embedding + RRF pipeline.
+- **Verifier** (SOD) approved **14 verified gaps** — each an arXiv-backed, evidence-linked finding.
+- **Issues mode** opened **11 real GitHub issues** on the repo (owner-scoped), e.g.
+  *"Implement δ-GClip (Regularized Gradient Clipping)"*, *"Add gradient clipping to trainer for
+  improved convergence."*
+- **PR mode** runs the harness-learning loop (arXiv:2609.35738): propose → test → revise → push → PR.
+
+Every run is a neatlogs trace; every commit an Entire checkpoint. A real failure→fix cycle
+(verifier JSON-fence parsing, missing-vs-present gap logic) was caught in traces and fixed —
+that before/after is the improvement evidence.
+
 ## Outputs
 
 ```

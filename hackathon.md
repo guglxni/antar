@@ -37,8 +37,28 @@ codebase and the current literature, and reports it with evidence.
   REFERENCES, SKILL, docs/setup.md.
 - PENDING: fill `.env` (NEATLOGS_API_KEY, LITELLM_API_KEY); cfo.ai account + MCP auth.
 
+### 2026-10-12 (multi-agent + harness-learning build)
+- Built the 8-agent system: Orchestrator, Scanner (AST+graphify), Researcher, Verifier (SOD),
+  Planner, Coder (aider), Tester, GitHub/GitLab ops. Owner-scoped write guard (verified live).
+- Integrated **harness learning** (arXiv:2609.35738): test-time revision loop with an
+  ExecutionReport feedback signal (propose → test → revise ≤3 rounds). MATH.md §8.
+- Hybrid RAG discovery (BM25 + local bge-small embeddings + RRF + recency), keyless.
+- FastAPI webapp (security headers, CORS, bearer auth) + hardened MCP (TokenVerifier + RBAC).
+- DevOps: non-root Dockerfile, CI (ruff/mypy/pytest/gitleaks/hadolint), pre-commit,
+  AWS App Runner deploy script. neatlogs doctor --local + --probe PASS.
+
+### 2026-10-12 (live end-to-end run — EVIDENCE)
+- Target: `guglxni/antar-demo-target` (trainer missing gradient clipping).
+- Scan: AdamW/cosine/AMP detected; gradient_clipping correctly flagged MISSING.
+- Research: 70 arXiv candidates (hybrid RAG). Verifier approved **14 verified gaps**.
+- **Issues mode: 11 real issues opened** (owner-scoped, label `antar, ml-gap`).
+- **Failure→fix captured in traces:** verifier JSON-fence parse bug + missing-vs-present
+  gap logic flaw → fixed → verified_gaps went 0 → 14. (EV-1 improvement evidence.)
+- PR mode (harness-learning fix + PR) running.
+
 ## Demo
 - URL/instructions: TBD. Offline fallback = pre-cached golden run in `examples/`.
+- Live demo repo: https://github.com/guglxni/antar-demo-target (11 agent-opened issues).
 
 ## Known limitations / next steps
 - Abstracts only (no full-PDF parsing). Python targets only. Advisory (no code edits).
