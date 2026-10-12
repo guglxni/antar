@@ -30,11 +30,14 @@ _MAX_REVISIONS = 3
 
 
 def _aider_model_string() -> str:
+    """Resolve the model + force the OpenAI-compatible gateway env for aider.
+
+    IMPORTANT: we override (not setdefault) so a stray global ~/.aider.conf.yml or
+    pre-existing env cannot hijack routing to a local/HF model."""
     cfg = resolve_config()
     if cfg.base_url:
-        os.environ.setdefault("OPENAI_API_BASE", cfg.base_url)
-        if cfg.provider == "litellm":
-            os.environ.setdefault("OPENAI_API_KEY", cfg.api_key)
+        os.environ["OPENAI_API_BASE"] = cfg.base_url
+        os.environ["OPENAI_API_KEY"] = cfg.api_key
     return cfg.model
 
 

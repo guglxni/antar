@@ -1,6 +1,6 @@
 {
   "repo": "guglxni/antar-demo-target",
-  "stage": "verified",
+  "stage": "done",
   "techniques": [
     {
       "name": "adamw",
@@ -810,7 +810,22 @@
       "kind": "missing"
     }
   ],
-  "issues": [],
+  "issues": [
+    "https://github.com/guglxni/antar-demo-target/issues/12",
+    "https://github.com/guglxni/antar-demo-target/issues/13",
+    "https://github.com/guglxni/antar-demo-target/issues/14",
+    "https://github.com/guglxni/antar-demo-target/issues/15",
+    "https://github.com/guglxni/antar-demo-target/issues/16",
+    "https://github.com/guglxni/antar-demo-target/issues/17",
+    "https://github.com/guglxni/antar-demo-target/issues/18",
+    "https://github.com/guglxni/antar-demo-target/issues/19",
+    "https://github.com/guglxni/antar-demo-target/issues/20",
+    "https://github.com/guglxni/antar-demo-target/issues/21",
+    "https://github.com/guglxni/antar-demo-target/issues/22",
+    "https://github.com/guglxni/antar-demo-target/issues/23",
+    "https://github.com/guglxni/antar-demo-target/issues/24",
+    "https://github.com/guglxni/antar-demo-target/issues/25"
+  ],
   "prs": [],
   "tokens_used": 0,
   "cost_usd": 0.0,
