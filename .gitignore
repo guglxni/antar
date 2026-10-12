@@ -26,3 +26,11 @@ build/
 /_ref/
 graphify-out/
 .antar/workspaces/
+
+# runtime artifacts
+.aider.tags.cache.v4/
+.antar/
+demo/antar-demo/snapshots/
+demo/antar-demo/antar-demo-v2.mp4
+demo/antar-demo/antar-demo-v3.mp4
+demo/antar-demo/bed.wav
