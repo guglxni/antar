@@ -13,20 +13,27 @@ import neatlogs
 
 from ..llm import get_client
 
-_VERIFY_PROMPT = """You are an adversarial verifier. Try to DISPROVE the claimed gap below.
+_VERIFY_PROMPT = """You are an adversarial verifier. Evaluate whether the claimed gap is REAL.
 
 Claimed gap: {claim}
-Technique said to be missing/misused: {technique}
+Technique: {technique}
+Is the technique PRESENT in the code? {present}
+Code context: this is a PyTorch training loop using an optimizer; the relevant
+training-step code sites are: {evidence}. (If the technique is reported MISSING,
+these are the locations where it would normally appear.)
 Supporting paper: [{arxiv_id}] {title}
 Paper abstract: {abstract}
-Code evidence (file:line where technique should/should not be): {evidence}
 
-Decide one verdict:
-- APPROVED  — the abstract genuinely supports the claim AND the technique is plausibly absent/misused at the cited lines.
-- REJECTED  — the paper id is wrong, the abstract does not support the claim, or the technique is clearly present.
-- UNCERTAIN — evidence is insufficient to confirm or deny.
+Rules:
+- APPROVED  — the abstract endorses/recommends the technique as beneficial or standard
+  for training, AND (if reported MISSING) it is plausibly absent from the cited code.
+  A paper that *improves on* or *builds on* a technique still counts as endorsing it.
+- REJECTED — the paper is unrelated to the technique, OR the technique is clearly already present.
+- UNCERTAIN — the abstract neither supports nor relates to the claim.
 
-Respond with ONLY valid JSON: {{"verdict": "APPROVED|REJECTED|UNCERTAIN", "reason": "<one sentence>"}}"""
+Do NOT reject merely because evidence is sparse when the technique is reported MISSING;
+judge whether the paper supports adopting it. Respond with ONLY valid JSON:
+{{"verdict": "APPROVED|REJECTED|UNCERTAIN", "reason": "<one sentence>"}}"""
 
 
 @dataclass
@@ -37,11 +44,12 @@ class Verdict:
 
 @neatlogs.span(kind="AGENT", name="verifier")
 def verify_gap(claim: str, technique: str, arxiv_id: str, title: str,
-               abstract: str, evidence: list[str]) -> Verdict:
+               abstract: str, evidence: list[str], present: bool = False) -> Verdict:
     client, model = get_client()
     prompt = _VERIFY_PROMPT.format(
-        claim=claim, technique=technique, arxiv_id=arxiv_id, title=title,
-        abstract=abstract[:1500], evidence=", ".join(evidence[:8]),
+        claim=claim, technique=technique, present=("yes" if present else "no"),
+        arxiv_id=arxiv_id, title=title,
+        abstract=abstract[:1500], evidence=", ".join(evidence[:8]) or "(none cited)",
     )
     for _ in range(2):  # empty/garbage -> re-prompt once (DESIGN.md §6)
         resp = client.chat.completions.create(
@@ -50,6 +58,10 @@ def verify_gap(claim: str, technique: str, arxiv_id: str, title: str,
             temperature=0,
         )
         text = (resp.choices[0].message.content or "").strip()
+        # strip markdown code fences (models often wrap JSON in ```json ... ```)
+        if text.startswith("```"):
+            text = text.split("```", 2)[1] if "```" in text[3:] else text
+            text = text.removeprefix("json").strip().rstrip("`").strip()
         try:
             data = json.loads(text)
             verdict = str(data.get("verdict", "UNCERTAIN")).upper()

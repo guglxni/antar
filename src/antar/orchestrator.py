@@ -57,20 +57,47 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
         state.advance("scanned", STATE_PATH)
 
         # 2. RESEARCH + VERIFY
+        # Two kinds of gaps:
+        #  (a) PRESENT techniques that may be outdated/misused (research their SOTA)
+        #  (b) MISSING best-practice techniques the repo should have (the real gaps)
+        from .tools.ast_scan import SIGNATURES
+        present = {t.name for t in techniques}
+        evidence_by_name = {t.name: t.evidence for t in techniques}
+        anchors = _context_anchors(techniques)  # e.g. "training", "optimizer"
+
+        candidates: list[dict] = []
+        # (a) present techniques
+        for t in techniques:
+            candidates.append({"name": t.name, "present": True, "evidence": t.evidence})
+        # (b) known techniques that are MISSING — candidate gaps.
+        # Evidence = WHERE the technique should be (e.g. after backward(), near the
+        # optimizer), so the verifier has concrete code context to check absence against.
+        missing = [name for name in {v[0] for v in SIGNATURES.values()} if name not in present]
+        for name in missing:
+            candidates.append({"name": name, "present": False,
+                               "evidence": _absence_evidence(name, techniques)})
+
         approved: list[dict] = []
         n_papers = 0
-        for t in techniques:
-            papers = _research(t.name.replace("_", " "))
+        for cand in candidates:
+            name = cand["name"]
+            query = " ".join([name.replace("_", " "), *anchors[:2]])
+            papers = _research(query)
             n_papers += len(papers)
-            state.papers[t.name] = [p.__dict__ for p in papers]
+            state.papers[name] = [p.__dict__ for p in papers]
             for p in papers[:3]:  # top-3 per technique
-                claim = f"Repo may be missing/misusing {t.name}; see {p.title}"
-                v = verifier.verify_gap(claim, t.name, p.arxiv_id, p.title,
-                                        p.abstract, t.evidence)
+                if cand["present"]:
+                    claim = f"Repo uses {name}; verify it follows current best practice in {p.title}"
+                else:
+                    claim = f"Repo is MISSING {name}; {p.title} shows it is current best practice"
+                v = verifier.verify_gap(claim, name, p.arxiv_id, p.title,
+                                        p.abstract, cand["evidence"],
+                                        present=cand["present"])
                 if v.verdict == "APPROVED":
-                    approved.append({"technique": t.name, "paper": p.__dict__,
+                    approved.append({"technique": name, "paper": p.__dict__,
                                      "claim": claim, "reason": v.reason,
-                                     "evidence": t.evidence})
+                                     "evidence": cand["evidence"],
+                                     "kind": "outdated" if cand["present"] else "missing"})
         state.gaps = approved
         state.advance("verified", STATE_PATH)
 
@@ -133,6 +160,27 @@ def _list_py_files(repo_path: str) -> list[str]:
 
 def _evidence_files(g: dict) -> list[str]:
     return sorted({e.split(":")[0] for e in g.get("evidence", [])})
+
+
+def _context_anchors(techniques: list) -> list[str]:
+    """Derive search-context words from detected technique categories."""
+    cats = {t.category for t in techniques}
+    anchors: list[str] = []
+    if cats & {"optimizer", "scheduler", "regularizer", "training", "precision"}:
+        anchors.append("training")
+    if cats & {"architecture", "normalization"}:
+        anchors.append("neural network")
+    return anchors
+
+
+def _absence_evidence(missing_name: str, techniques: list) -> list[str]:
+    """For a MISSING technique, point at the code locations where it SHOULD appear —
+    the nearest present techniques' sites (e.g. the optimizer for gradient clipping)."""
+    sites: list[str] = []
+    for t in techniques:
+        if t.category in {"optimizer", "training", "scheduler"}:
+            sites.extend(t.evidence[:1])
+    return sites[:3] or ["(repo root)"]
 
 
 def _issue_body(g: dict) -> str:
