@@ -29,10 +29,21 @@ class PRResult:
 
 
 def _gh() -> Github:
-    token = os.environ.get("GITHUB_TOKEN")
+    token = os.environ.get("GITHUB_TOKEN") or _gh_cli_token()
     if not token:
-        raise RuntimeError("GITHUB_TOKEN required for issue/PR modes (see .env.example).")
+        raise RuntimeError("No GitHub token. Set GITHUB_TOKEN or `gh auth login`.")
     return Github(token)
+
+
+def _gh_cli_token() -> str | None:
+    """Reuse the user's `gh` session token (keyring) if present — no manual PAT needed."""
+    try:
+        out = subprocess.run(["gh", "auth", "token"], capture_output=True,
+                             text=True, timeout=10)
+        tok = out.stdout.strip()
+        return tok or None
+    except (OSError, subprocess.SubprocessError):
+        return None
 
 
 @neatlogs.span(kind="TOOL", name="git_create_issue")

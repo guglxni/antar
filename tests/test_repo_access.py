@@ -25,8 +25,13 @@ def test_parse_ssh_url():
     assert owner == "guglxni" and name == "antar"
 
 
-def test_assert_can_write_github_requires_token(monkeypatch):
-    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
-    with pytest.raises(OwnershipError):
-        from antar.agents.repo_access import assert_can_write
-        assert_can_write("someone-else/their-repo")
+def test_assert_can_write_foreign_repo_refused(monkeypatch):
+    """A repo the identity doesn't own must be refused (uses gh token if present)."""
+    pytest.importorskip("github")
+    import shutil
+    import pytest as _pytest
+    from antar.agents.repo_access import assert_can_write, OwnershipError
+    if shutil.which("gh") is None:
+        _pytest.skip("gh CLI not available for token")
+    with _pytest.raises(OwnershipError):
+        assert_can_write("karpathy/minGPT")  # not owned by the authed identity

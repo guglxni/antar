@@ -17,6 +17,16 @@ class OwnershipError(PermissionError):
     """Raised when a write is attempted on a repo the identity doesn't own."""
 
 
+def _gh_cli_token() -> str | None:
+    """Reuse the user's `gh` session token (keyring) if present."""
+    try:
+        out = subprocess.run(["gh", "auth", "token"], capture_output=True,
+                             text=True, timeout=10)
+        return out.stdout.strip() or None
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
 @dataclass
 class RepoAccess:
     host: str            # "github" | "gitlab"
@@ -52,9 +62,9 @@ def parse_target(repo: str) -> tuple[str, str, str]:
 
 def github_access(repo_full: str) -> RepoAccess:
     from github import Github
-    token = os.environ.get("GITHUB_TOKEN")
+    token = os.environ.get("GITHUB_TOKEN") or _gh_cli_token()
     if not token:
-        raise OwnershipError("GITHUB_TOKEN not set (owner-scoped writes need it).")
+        raise OwnershipError("No GitHub token (set GITHUB_TOKEN or `gh auth login`).")
     g = Github(token)
     me = g.get_user().login
     repo = g.get_repo(repo_full)

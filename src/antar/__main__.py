@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from rich import print as rprint
 
 from . import orchestrator
+from .llm import finalize_tracing
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -40,8 +41,12 @@ def main(argv: list[str] | None = None) -> int:
             rprint("[yellow]Offline replay not yet wired — use a cached golden run.[/yellow]")
             return 0
         rprint(f"[cyan]antar[/cyan] → repo={args.repo} mode={args.mode}")
-        rep = orchestrator.run(args.repo, mode=args.mode, allow_pr=args.allow_pr,
-                               max_prs=args.max_prs, offline=args.offline)
+        try:
+            rep = orchestrator.run(args.repo, mode=args.mode, allow_pr=args.allow_pr,
+                                   max_prs=args.max_prs, offline=args.offline)
+        finally:
+            # CRITICAL: flush + shutdown or short-lived spans are dropped (SDK guide)
+            finalize_tracing()
         rprint("\n[bold green]Done[/bold green]")
         rprint(f"  techniques: {rep.techniques}")
         rprint(f"  papers:     {rep.papers}")
