@@ -38,7 +38,8 @@ class Technique:
     confidence: float = 0.0
 
     def add(self, loc: str, weight: float) -> None:
-        self.evidence.append(loc)
+        if loc not in self.evidence:
+            self.evidence.append(loc)
         # noisy-or combination (MATH.md §1)
         self.confidence = 1 - (1 - self.confidence) * (1 - weight)
 
@@ -74,8 +75,21 @@ class _Visitor(ast.NodeVisitor):
 
 
 def scan_repo(repo_path: str | Path) -> list[Technique]:
-    """Scan all .py under repo_path; return techniques with confidence >= 0.5."""
+    """Scan all .py under repo_path; return techniques with confidence >= 0.5.
+
+    If graphify is available, auto-build the repo's knowledge graph and enrich
+    each technique with graph-derived locations (broader structural evidence).
+    """
     root = Path(repo_path)
+    # Auto-wire graphify: build the graph if absent (AST-only, no API cost).
+    use_graph = False
+    gf = None
+    try:
+        from . import graphify_integration as gf  # type: ignore[no-redef]
+        use_graph = gf.ensure_graph(root)
+    except Exception:
+        use_graph = False
+
     found: dict[str, Technique] = {}
     for py in sorted(root.rglob("*.py")):
         if any(p in py.parts for p in {".venv", "venv", "node_modules", ".git"}):
@@ -85,4 +99,13 @@ def scan_repo(repo_path: str | Path) -> list[Technique]:
         except SyntaxError:
             continue
         _Visitor(py.relative_to(root), found).visit(tree)
-    return [t for t in found.values() if t.confidence >= 0.5]
+
+    techs = [t for t in found.values() if t.confidence >= 0.5]
+
+    # Enrich with graphify hints (extra evidence locations from the knowledge graph).
+    if use_graph and gf is not None:
+        for t in techs:
+            for hint in gf.technique_hints(root, t.name):
+                if hint not in t.evidence:
+                    t.evidence.append(hint)
+    return techs

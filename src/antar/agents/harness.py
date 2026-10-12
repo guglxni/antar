@@ -24,6 +24,7 @@ import neatlogs
 
 from ..agents import tester
 from ..llm import resolve_config
+from ..tools import graphify_integration as gf
 
 _MAX_REVISIONS = 3
 
@@ -61,9 +62,15 @@ def revise_until_pass(repo_path: str, fix_summary: str, fnames: list[str],
     history: list[str] = []
     report = tester.ExecutionReport(0.0, False, "", "", 1, 0.0, 0, [])
 
+    # Equip the coder with the target repo's code map (graphify) for precise context.
+    code_map = ""
+    if gf.ensure_graph(repo_path):
+        code_map = gf.query(repo_path, f"where is the code related to: {fix_summary}",
+                            budget=800)
+
     for t in range(1, max_revisions + 1):
         # x_t = task + current harness + execution report (paper §4.2 / App E.1)
-        instruction = _revision_prompt(fix_summary, report, t)
+        instruction = _revision_prompt(fix_summary, report, t, code_map)
         with neatlogs.trace(f"propose_revision_{t}", kind="LLM"):
             coder = Coder.create(main_model=model, fnames=fnames, io=io,
                                  auto_commits=True, dirty_commits=True)
@@ -80,8 +87,11 @@ def revise_until_pass(repo_path: str, fix_summary: str, fnames: list[str],
     return RevisionResult(False, max_revisions, report, history)
 
 
-def _revision_prompt(fix_summary: str, report: tester.ExecutionReport, round_no: int) -> str:
+def _revision_prompt(fix_summary: str, report: tester.ExecutionReport, round_no: int,
+                     code_map: str = "") -> str:
     base = f"Task: {fix_summary}\n"
+    if code_map:
+        base += f"\nRelevant code map (from graphify):\n{code_map}\n"
     if round_no == 1:
         return base + "\nImplement the minimal, correct change. Do not hard-code answers."
     # subsequent rounds: feed the execution report (the harness-learning signal)
