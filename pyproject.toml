@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "antar-agent"
+version = "0.2.0"
+description = "Autonomous agent that finds the verified gap between ML code and the literature — and codes the fix."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=2.0",
+    "neatlogs>=1.4",
+    "litellm",
+    "python-dotenv",
+    "PyGithub>=2.0",
+    "aider-chat",
+    "fastmcp>=3.0",
+    "rich",
+    "pytest",
+]
+
+[project.scripts]
+antar = "antar.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
