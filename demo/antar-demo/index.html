@@ -4,199 +4,226 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
     <title>antar — neatHack demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,900&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { box-sizing: border-box; }
-      body { margin: 0; background: #07090d; color: #eef2f6;
-             font-family: "Inter", "SF Pro Display", system-ui, sans-serif; }
-      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden;
-              background: radial-gradient(1200px 700px at 70% 20%, #0d1622 0%, #07090d 60%); }
-      .clip { position: absolute; inset: 0; display: grid; place-items: center; }
+      html,body { margin:0; background:#05070b; }
+      body { font-family:"Inter",system-ui,sans-serif; color:#eef2f6;
+             -webkit-font-smoothing:antialiased; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden;
+              background:
+                radial-gradient(1400px 900px at 75% 15%, #0c1b29 0%, transparent 55%),
+                radial-gradient(1000px 800px at 15% 90%, #160f2a 0%, transparent 55%),
+                #05070b; }
 
-      /* decorative */
-      .grid-bg { position: absolute; inset: 0; opacity: .14;
-        background-image: linear-gradient(#22d3ee22 1px, transparent 1px),
-                          linear-gradient(90deg, #22d3ee22 1px, transparent 1px);
-        background-size: 60px 60px; }
-      .glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .35; }
+      /* film grain */
+      .grain { position:absolute; inset:-50%; width:200%; height:200%; pointer-events:none;
+        opacity:.05; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-      .kicker { font-size: 28px; letter-spacing: .35em; text-transform: uppercase;
-                color: #22d3ee; font-weight: 600; }
-      .big { margin: 0; font-weight: 800; line-height: .95; letter-spacing: -0.02em; }
-      .mono { font-family: "JetBrains Mono", "SF Mono", monospace; }
-      .accent { color: #22d3ee; }
-      .violet { color: #a78bfa; }
-      .green { color: #34d399; }
-      .amber { color: #fbbf24; }
-      .sub { color: #9aa7b4; font-size: 34px; font-weight: 400; }
-      .card { background: #0e141c; border: 1px solid #1d2836; border-radius: 20px;
-              padding: 36px 44px; }
-      .pill { display:inline-block; padding: 10px 22px; border-radius: 999px;
-              border: 1px solid #243244; background:#0e141c; font-size: 26px; margin: 8px; }
-      .num { font-size: 150px; font-weight: 800; line-height: 1; }
-      .toolcard { width: 480px; }
-      .toolcard h3 { margin:0 0 8px; font-size: 46px; }
-      .toolcard p { margin:0; color:#9aa7b4; font-size: 28px; line-height:1.35; }
-      .bar { height: 14px; border-radius: 999px; background:#16202c; overflow:hidden; margin-top:14px;}
-      .bar > div { height:100%; border-radius:999px; }
-      .arrow { font-size: 60px; color:#22d3ee; }
-      code.k { background:#0e141c; border:1px solid #243244; padding: 4px 14px; border-radius: 8px; }
+      /* scanline sweep */
+      .sweep { position:absolute; inset:0; pointer-events:none;
+        background:linear-gradient(180deg, transparent 0%, #22d3ee08 50%, transparent 100%);
+        background-size:100% 300%; }
+
+      .clip { position:absolute; inset:0; display:grid; place-items:center; padding:0 100px; }
+
+      .serif { font-family:"Playfair Display",Georgia,serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .kick { font-size:24px; letter-spacing:.42em; text-transform:uppercase;
+              color:#22d3ee; font-weight:600; }
+      .h-display { margin:0; font-weight:900; letter-spacing:-0.03em; line-height:.96; }
+      .accent{color:#22d3ee}.violet{color:#a78bfa}.green{color:#34d399}.amber{color:#fbbf24}
+      .muted{color:#8b98a5}
+      .rule { width:90px; height:4px; background:#22d3ee; border-radius:2px; margin:26px auto; }
+      .card { background:#0b111a; border:1px solid #1b2836; border-radius:18px; }
+      .statnum { font-weight:900; font-size:170px; letter-spacing:-0.04em; line-height:1;
+                 font-feature-settings:"tnum"; }
+      .statlab { font-size:26px; color:#8b98a5; letter-spacing:.08em; text-transform:uppercase; margin-top:10px;}
+      .loopcard { padding:30px 34px; text-align:center; }
+      .loopcard .t { font-size:30px; font-weight:700; }
+      .loopcard .d { font-size:19px; color:#8b98a5; margin-top:8px; font-family:"JetBrains Mono",monospace;}
+      .looparrow { font-size:40px; color:#22d3ee; }
+      .toolc { width:500px; padding:38px 42px; }
+      .toolc h3{ margin:0; font-size:50px; font-weight:900; letter-spacing:-0.02em;}
+      .toolc p { margin:14px 0 0; color:#9aa7b4; font-size:27px; line-height:1.4; }
+      .toolc .tag { font-family:"JetBrains Mono",monospace; font-size:19px; color:#22d3ee;
+                    letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; display:block;}
+      .codebox { font-family:"JetBrains Mono",monospace; font-size:29px; line-height:1.8;
+                 text-align:left; padding:40px 52px; color:#c9d4de; }
+      .codebox .cm { color:#5c6b7a; }
+      .pill { display:inline-block; padding:14px 30px; border-radius:999px; border:1px solid #243244;
+              background:#0b111a; font-family:"JetBrains Mono",monospace; font-size:27px; margin:10px; }
+      .verdict { font-family:"JetBrains Mono",monospace; font-size:22px; padding:6px 16px; border-radius:6px; }
+      .v-pass { background:#0f2e22; color:#34d399; border:1px solid #1d5c42;}
+      .v-rej  { background:#2e1214; color:#f87171; border:1px solid #6b2226;}
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="antar" data-start="0"
-         data-width="1920" data-height="1080" data-duration="90">
+         data-width="1920" data-height="1080" data-duration="92">
+      <div class="grain"></div>
+      <div class="sweep"></div>
 
-      <div class="grid-bg"></div>
-      <div class="glow" id="g1" data-layout-allow-overflow style="width:700px;height:700px;background:#0e7490;top:-200px;right:-150px;"></div>
-      <div class="glow" id="g2" data-layout-allow-overflow style="width:600px;height:600px;background:#6d28d9;bottom:-200px;left:-150px;"></div>
-
-      <!-- 1. HOOK -->
+      <!-- 1 HOOK -->
       <section class="clip" id="s1" data-start="0" data-duration="9" data-track-index="1">
-        <div style="text-align:center;">
-          <div class="kicker" id="hook-kicker">every ml codebase drifts from the state of the art</div>
-          <h1 class="big" id="hook-big" style="font-size:120px; margin-top:30px;">
-            What is your code<br/><span class="accent">missing?</span>
+        <div style="text-align:center; max-width:1600px;">
+          <div class="kick" id="h-kick">every ml codebase drifts from the state of the art</div>
+          <div class="rule" id="h-rule"></div>
+          <h1 class="h-display serif" id="h-big" style="font-size:120px; font-weight:700;">
+            So what is your code<br/><em class="accent" style="font-style:normal;">missing</em>?
           </h1>
         </div>
       </section>
 
-      <!-- 2. TITLE -->
+      <!-- 2 TITLE -->
       <section class="clip" id="s2" data-start="9" data-duration="8" data-track-index="1">
         <div style="text-align:center;">
-          <div class="kicker" id="t-kick">meet</div>
-          <h1 class="big" id="t-title" style="font-size:200px;">antar</h1>
-          <div class="sub" id="t-sub" style="margin-top:20px;">अन्तर — <i>the gap.</i> An agent that finds it, verifies it, and fixes it.</div>
-        </div>
-      </section>
-
-      <!-- 3. THE LOOP -->
-      <section class="clip" id="s3" data-start="17" data-duration="14" data-track-index="1">
-        <div style="width:100%; padding: 0 120px;">
-          <div class="kicker" style="text-align:center; margin-bottom:40px;" id="loop-kick">one agent, full loop</div>
-          <div style="display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:nowrap;" id="loop-row">
-            <div class="card mono" data-step style="font-size:27px; padding:26px 30px;">scan<br/><span class="sub" style="font-size:19px;">AST + graphify</span></div>
-            <div class="arrow" data-step style="font-size:44px;">→</div>
-            <div class="card mono" data-step style="font-size:27px; padding:26px 30px;">research<br/><span class="sub" style="font-size:19px;">hybrid arXiv RAG</span></div>
-            <div class="arrow" data-step style="font-size:44px;">→</div>
-            <div class="card mono" data-step style="font-size:27px; padding:26px 30px; border-color:#d4a017;">verify<br/><span class="sub" style="font-size:19px;">SOD sub-agent</span></div>
-            <div class="arrow" data-step style="font-size:44px;">→</div>
-            <div class="card mono" data-step style="font-size:27px; padding:26px 30px;">issue<br/><span class="sub" style="font-size:19px;">owner-scoped</span></div>
-            <div class="arrow" data-step style="font-size:44px;">→</div>
-            <div class="card mono" data-step style="font-size:27px; padding:26px 30px; border-color:#34d399;">fix → PR<br/><span class="sub" style="font-size:19px;">harness learning</span></div>
+          <div class="kick" id="t-kick">meet</div>
+          <h1 class="h-display serif" id="t-title" style="font-size:280px; font-weight:700;">antar</h1>
+          <div class="muted" id="t-sub" style="font-size:36px; margin-top:6px; letter-spacing:.02em;">
+            अन्तर · <i>the gap</i> — find it. prove it. fix it.
           </div>
         </div>
       </section>
 
-      <!-- 4. SELF-IMPROVEMENT (research) -->
-      <section class="clip" id="s4" data-start="31" data-duration="13" data-track-index="1">
-        <div style="text-align:center; max-width:1500px;">
-          <div class="kicker" id="hl-kick">grounded in research</div>
-          <h2 class="big" id="hl-title" style="font-size:84px; margin:24px 0;">It doesn't just fail.<br/>It <span class="violet">revises itself.</span></h2>
-          <div class="card mono" id="hl-code" style="text-align:left; font-size:30px; line-height:1.7; color:#c9d4de;">
-            <span class="sub"># Harness Learning — arXiv:2609.35738</span><br/>
-            x_t = { fix, harness, <span class="amber">execution report</span> }<br/>
-            propose → apply → <span class="amber">test</span> → read report → <span class="violet">revise</span>
+      <!-- 3 LOOP -->
+      <section class="clip" id="s3" data-start="17" data-duration="17" data-track-index="1">
+        <div style="width:100%;">
+          <div class="kick" id="l-kick" style="text-align:center; margin-bottom:46px;">one agent · the full loop</div>
+          <div style="display:flex; align-items:center; justify-content:center; gap:14px;" id="l-row">
+            <div class="card loopcard" data-step><div class="t">scan</div><div class="d">ast + graphify</div></div>
+            <div class="looparrow" data-step>→</div>
+            <div class="card loopcard" data-step><div class="t">research</div><div class="d">hybrid arxiv rag</div></div>
+            <div class="looparrow" data-step>→</div>
+            <div class="card loopcard" data-step style="border-color:#d4a017;"><div class="t">verify</div><div class="d">sod sub-agent</div></div>
+            <div class="looparrow" data-step>→</div>
+            <div class="card loopcard" data-step><div class="t">issue</div><div class="d">owner-scoped</div></div>
+            <div class="looparrow" data-step>→</div>
+            <div class="card loopcard" data-step style="border-color:#34d399;"><div class="t">fix → pr</div><div class="d">harness learning</div></div>
+          </div>
+          <!-- verification mini-strip -->
+          <div style="display:flex; gap:18px; justify-content:center; margin-top:44px;" id="v-strip">
+            <div class="card" data-v style="padding:20px 28px; display:flex; gap:14px; align-items:center;">
+              <span class="mono" style="font-size:22px;">gradient_clipping</span><span class="verdict v-pass">APPROVED</span>
+            </div>
+            <div class="card" data-v style="padding:20px 28px; display:flex; gap:14px; align-items:center;">
+              <span class="mono" style="font-size:22px;">hallucinated_paper_id</span><span class="verdict v-rej">REJECTED</span>
+            </div>
+            <div class="card" data-v style="padding:20px 28px; display:flex; gap:14px; align-items:center;">
+              <span class="mono" style="font-size:22px;">warmup_schedule</span><span class="verdict v-pass">APPROVED</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- 5. PROOF / NUMBERS -->
-      <section class="clip" id="s5" data-start="44" data-duration="13" data-track-index="1">
+      <!-- 4 RESEARCH / SELF-IMPROVEMENT -->
+      <section class="clip" id="s4" data-start="34" data-duration="16" data-track-index="1">
+        <div style="text-align:center; max-width:1560px;">
+          <div class="kick" id="r-kick">grounded in research · arxiv:2609.35738</div>
+          <h2 class="h-display serif" id="r-title" style="font-size:88px; font-weight:700; margin:26px 0;">
+            It doesn't just fail.<br/>It <em class="violet" style="font-style:normal;">revises itself</em>.
+          </h2>
+          <div class="card codebox" id="r-code">
+            <span class="cm">// harness learning — test-time adaptation</span><br/>
+            x<sub>t</sub> = { fix, harness, <span class="amber">execution report</span> }<br/>
+            propose → apply → <span class="amber">test</span> → read report → <span class="violet">revise</span> ↻
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 NUMBERS -->
+      <section class="clip" id="s5" data-start="50" data-duration="14" data-track-index="1">
         <div style="text-align:center;">
-          <div class="kicker" id="num-kick" style="margin-bottom:30px;">live on a real repo</div>
-          <div style="display:flex; gap:60px; justify-content:center; align-items:flex-end;">
-            <div><div class="num accent" data-count="14">0</div><div class="sub">verified gaps</div></div>
-            <div><div class="num violet" data-count="25">0</div><div class="sub">issues opened</div></div>
-            <div><div class="num green" id="pr-num">#26</div><div class="sub">PR open</div></div>
+          <div class="kick" id="n-kick" style="margin-bottom:40px;">live on a real repository</div>
+          <div style="display:flex; gap:90px; justify-content:center; align-items:flex-end;">
+            <div><div class="statnum accent" data-count="14">0</div><div class="statlab">verified gaps</div></div>
+            <div><div class="statnum violet" data-count="25">0</div><div class="statlab">issues opened</div></div>
+            <div><div class="statnum green" id="pr-n">#26</div><div class="statlab">pull request · open</div></div>
           </div>
         </div>
       </section>
 
-      <!-- 6. TRIO -->
-      <section class="clip" id="s6" data-start="57" data-duration="18" data-track-index="1">
-        <div style="width:100%; padding:0 100px;">
-          <div class="kicker" style="text-align:center; margin-bottom:36px;" id="trio-kick">built on the neatHack trio</div>
-          <div style="display:flex; gap:32px; justify-content:center;">
-            <div class="card toolcard" data-tool>
-              <h3 class="accent">neatlogs</h3>
+      <!-- 6 TRIO -->
+      <section class="clip" id="s6" data-start="64" data-duration="18" data-track-index="1">
+        <div style="width:100%;">
+          <div class="kick" id="tr-kick" style="text-align:center; margin-bottom:42px;">built on the neatHack trio</div>
+          <div style="display:flex; gap:34px; justify-content:center;">
+            <div class="card toolc" data-tool>
+              <span class="tag">observability</span><h3 class="accent">neatlogs</h3>
               <p>Every run a trace, every step a span — tokens, cost, latency. Failure→fix is the evidence.</p>
-              <div class="bar"><div style="background:#22d3ee; width:0%" data-bar="100"></div></div>
             </div>
-            <div class="card toolcard" data-tool>
-              <h3 class="green">Entire</h3>
-              <p>Every commit a checkpoint; <span class="mono">entire graph</span> maps the repo. Full development history.</p>
-              <div class="bar"><div style="background:#34d399; width:0%" data-bar="100"></div></div>
+            <div class="card toolc" data-tool>
+              <span class="tag" style="color:#34d399;">repo memory</span><h3 class="green">Entire</h3>
+              <p>Every commit a checkpoint. <span class="mono">entire graph</span> maps the codebase. Full development history.</p>
             </div>
-            <div class="card toolcard" data-tool>
-              <h3 class="amber">cfo.ai</h3>
-              <p>Traced token cost → pricing, margin, runway. Unit economics from real runs.</p>
-              <div class="bar"><div style="background:#fbbf24; width:0%" data-bar="100"></div></div>
+            <div class="card toolc" data-tool>
+              <span class="tag" style="color:#fbbf24;">business</span><h3 class="amber">cfo.ai</h3>
+              <p>The agent's own traced token cost becomes its pricing, margin, and runway.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 7. CTA -->
-      <section class="clip" id="s7" data-start="75" data-duration="15" data-track-index="1">
+      <!-- 7 CTA -->
+      <section class="clip" id="s7" data-start="82" data-duration="10" data-track-index="1">
         <div style="text-align:center;">
-          <h1 class="big" id="cta-title" style="font-size:110px;">antar</h1>
-          <div class="sub" id="cta-sub" style="margin:20px 0 34px;">find the gap. prove it. fix it.</div>
-          <div id="cta-links">
-            <span class="pill mono">github.com/guglxni/antar</span>
-            <span class="pill mono">#neatHack</span>
+          <h1 class="h-display serif" id="c-title" style="font-size:150px; font-weight:700;">antar</h1>
+          <div class="muted" id="c-sub" style="font-size:36px; margin:18px 0 36px;">find the gap. prove it. fix it.</div>
+          <div id="c-links">
+            <span class="pill">github.com/guglxni/antar</span>
+            <span class="pill" style="border-color:#22d3ee; color:#22d3ee;">#neatHack</span>
           </div>
         </div>
       </section>
-
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      // ambient glow drift (deterministic)
-      tl.fromTo("#g1", { scale: 1 }, { scale: 1.15, duration: 90, ease: "none" }, 0);
-      tl.fromTo("#g2", { scale: 1.1 }, { scale: 1, duration: 90, ease: "none" }, 0);
+      // ambient sweep (deterministic)
+      tl.fromTo(".sweep", { backgroundPosition: "0% -100%" }, { backgroundPosition: "0% 300%", duration: 92, ease: "none" }, 0);
 
-      // 1. HOOK
-      tl.from("#hook-kicker", { y: 30, autoAlpha: 0, duration: 0.8, ease: "power3.out" }, 0.4);
-      tl.from("#hook-big", { y: 60, autoAlpha: 0, duration: 1.0, ease: "power3.out" }, 0.9);
+      // 1 HOOK — word reveal + rule draw + big serif rise
+      tl.from("#h-kick", { y: 26, autoAlpha: 0, duration: 0.8, ease: "power3.out" }, 0.4);
+      tl.fromTo("#h-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 0.9);
+      tl.from("#h-big", { y: 90, autoAlpha: 0, duration: 1.2, ease: "power4.out" }, 1.1);
+      tl.to("#h-big em", { color: "#67e8f9", duration: 0.6 }, 2.6);
 
-      // 2. TITLE
+      // 2 TITLE — big serif, scale + tracking
       tl.from("#t-kick", { autoAlpha: 0, duration: 0.5 }, 9.3);
-      tl.from("#t-title", { scale: 0.8, autoAlpha: 0, duration: 1.0, ease: "back.out(1.6)" }, 9.8);
-      tl.from("#t-sub", { y: 24, autoAlpha: 0, duration: 0.7 }, 10.8);
+      tl.from("#t-title", { scale: 0.86, autoAlpha: 0, duration: 1.1, ease: "expo.out" }, 9.7);
+      tl.from("#t-sub", { y: 26, autoAlpha: 0, duration: 0.7, ease: "power3.out" }, 11.0);
 
-      // 3. LOOP — stagger the cards + arrows
-      tl.from("#loop-kick", { autoAlpha: 0, y: 20, duration: 0.6 }, 17.4);
-      tl.from("#s3 [data-step]", { y: 40, autoAlpha: 0, stagger: 0.22, duration: 0.6, ease: "power3.out" }, 18.0);
+      // 3 LOOP — staggered slide-in, arrows draw
+      tl.from("#l-kick", { autoAlpha: 0, y: 22, duration: 0.6 }, 17.4);
+      tl.from("#l-row [data-step]", { x: -46, autoAlpha: 0, stagger: 0.24, duration: 0.65, ease: "power3.out" }, 18.0);
+      tl.from("#v-strip [data-v]", { y: 40, autoAlpha: 0, stagger: 0.3, duration: 0.6, ease: "back.out(1.7)" }, 22.0);
 
-      // 4. RESEARCH
-      tl.from("#hl-kick", { autoAlpha: 0, duration: 0.5 }, 31.4);
-      tl.from("#hl-title", { y: 40, autoAlpha: 0, duration: 0.9, ease: "power3.out" }, 32.0);
-      tl.from("#hl-code", { y: 30, autoAlpha: 0, duration: 0.8 }, 33.0);
+      // 4 RESEARCH — title rise, code card tilt-in
+      tl.from("#r-kick", { autoAlpha: 0, duration: 0.5 }, 34.4);
+      tl.from("#r-title", { y: 60, autoAlpha: 0, duration: 1.0, ease: "power4.out" }, 35.0);
+      tl.from("#r-code", { y: 50, autoAlpha: 0, rotationX: 12, transformOrigin: "center bottom", duration: 0.9, ease: "power3.out" }, 36.2);
 
-      // 5. NUMBERS — count up
-      tl.from("#num-kick", { autoAlpha: 0, duration: 0.5 }, 44.4);
+      // 5 NUMBERS — count up + PR pop
+      tl.from("#n-kick", { autoAlpha: 0, duration: 0.5 }, 50.4);
       document.querySelectorAll("[data-count]").forEach((el) => {
-        const target = +el.dataset.count;
-        const obj = { v: 0 };
-        tl.fromTo(el, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 45.0);
-        tl.to(obj, { v: target, duration: 1.4, ease: "power2.out",
-                     onUpdate: () => (el.textContent = Math.round(obj.v)) }, 45.2);
+        const target = +el.dataset.count; const obj = { v: 0 };
+        tl.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power3.out" }, 51.0);
+        tl.to(obj, { v: target, duration: 1.6, ease: "power2.out", onUpdate: () => (el.textContent = Math.round(obj.v)) }, 51.2);
       });
-      tl.from("#pr-num", { scale: 0.6, autoAlpha: 0, duration: 0.7, ease: "back.out(2)" }, 46.6);
+      tl.from("#pr-n", { scale: 0.5, autoAlpha: 0, duration: 0.8, ease: "back.out(2.2)" }, 52.6);
 
-      // 6. TRIO — cards up, bars fill
-      tl.from("#trio-kick", { autoAlpha: 0, y: 20, duration: 0.6 }, 57.4);
-      tl.from("[data-tool]", { y: 60, autoAlpha: 0, stagger: 0.25, duration: 0.8, ease: "power3.out" }, 58.2);
-      tl.to("[data-bar]", { width: "100%", stagger: 0.25, duration: 1.4, ease: "power2.inOut" }, 59.4);
+      // 6 TRIO — cards rise staggered
+      tl.from("#tr-kick", { autoAlpha: 0, y: 22, duration: 0.6 }, 64.4);
+      tl.from("[data-tool]", { y: 70, autoAlpha: 0, stagger: 0.28, duration: 0.9, ease: "power3.out" }, 65.2);
 
-      // 7. CTA
-      tl.from("#cta-title", { scale: 0.85, autoAlpha: 0, duration: 0.9, ease: "back.out(1.5)" }, 75.4);
-      tl.from("#cta-sub", { y: 24, autoAlpha: 0, duration: 0.7 }, 76.4);
-      tl.from("#cta-links .pill", { y: 24, autoAlpha: 0, stagger: 0.2, duration: 0.6 }, 77.4);
+      // 7 CTA — serif pop + pills
+      tl.from("#c-title", { scale: 0.8, autoAlpha: 0, duration: 1.0, ease: "expo.out" }, 82.3);
+      tl.from("#c-sub", { y: 28, autoAlpha: 0, duration: 0.7 }, 83.3);
+      tl.from("#c-links .pill", { y: 28, autoAlpha: 0, stagger: 0.2, duration: 0.6, ease: "back.out(1.8)" }, 84.2);
 
       window.__timelines["antar"] = tl;
     </script>
