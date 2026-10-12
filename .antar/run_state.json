@@ -1,6 +1,6 @@
 {
-  "repo": "/tmp/antar-demo-target",
-  "stage": "done",
+  "repo": "guglxni/antar-demo-target",
+  "stage": "verified",
   "techniques": [
     {
       "name": "adamw",
@@ -185,154 +185,6 @@
         "relevance": 0.8311685704190438
       }
     ],
-    "checkpointing": [
-      {
-        "arxiv_id": "2509.04084",
-        "title": "Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems",
-        "abstract": "Distributed training of large deep-learning models often leads to failures, so checkpointing is commonly employed for recovery. State-of-the-art studies focus on frequent checkpointing for fast recovery from failures. However, frequent checkpointing generates numerous checkpoints, incurring substantial costs and thus degrading training performance. Recently, differential checkpointing has been proposed to reduce costs, but it is limited to recommendation systems, so its application to general distributed training systems remains unexplored. In this paper, we find that gradients generated during distributed training can be reused to construct differential checkpoints, while the former's size is smaller than the latter's, motivating us to reuse gradients for low-cost differential checkpointing. Based on this main idea, we propose \\sysname, a frequent checkpointing framework for compression-enabled training systems that reuses compressed gradients as differential checkpoints, eliminating redundant differential computation and reducing checkpoint transmission cost. Furthermore, we extend gradient reuse to scenarios without gradient compression and propose \\sysnameplus, which employs layer-wise-reuse snapshotting and incremental-merging persistence to overlap checkpointing with training execution. Experiments on diverse workloads, including billion-parameter-scale models, demonstrate that \\sysname and \\sysnameplus significantly reduce checkpointing overhead and enable checkpointing at frequencies as high as once per iteration, reducing training time by up to 89.2\\% and 81.2\\%, respectively.",
-        "published": "2025-09-04",
-        "relevance": 0.9197784236642003
-      },
-      {
-        "arxiv_id": "2412.15411",
-        "title": "Sparse Checkpointing for Fast and Reliable MoE Training",
-        "abstract": "As large language models scale, training them requires thousands of GPUs over extended durations--making frequent failures an inevitable reality. While checkpointing remains the primary fault-tolerance mechanism, existing methods fall short when applied to Mixture-of-Experts (MoE) models. Due to their substantially larger training state, MoE models exacerbate checkpointing overheads, often causing costly stalls or prolonged recovery that severely degrade training efficiency. We present MoEvement, a distributed, in-memory checkpointing system tailored for MoE models. MoEvement is built on three key ideas: (1) sparse checkpointing, which incrementally snapshots subsets of experts across iterations to reduce overhead; (2) a sparse-to-dense checkpoint conversion mechanism that incrementally reconstructs consistent dense checkpoints from sparse snapshots; and (3) upstream logging of activations and gradients at pipeline-stage boundaries, enabling localized recovery without re-executing unaffected workers. Evaluations across diverse MoE models with up to 64 experts show that MoEvement reduces checkpointing overhead by up to $4\\times$ and recovery overhead by up to $31\\times$ compared to state-of-the-art approaches, sustaining ETTR $\\ge 0.94$ even under frequent failures (MTBF as low as 10 minutes) and delivering up to $8\\times$ overall training speedup, all without compromising synchronous training semantics. Overall, MoEvement offers a robust and scalable fault-tolerance solution for the next generation of sparsely activated models.",
-        "published": "2024-12-19",
-        "relevance": 0.8723222062192663
-      },
-      {
-        "arxiv_id": "2406.18820",
-        "title": "Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis",
-        "abstract": "Deep neural network (DNN) training continues to scale rapidly in terms of model size, data volume, and sequence length, to the point where multiple machines are required to fit large models for training. Different distributed and parallel training strategies have been developed to support large-scale DNN training by partitioning the training state across GPUs. However, existing DNN training systems provide very limited support for reconfiguring parallelism strategies in the middle of the training via checkpointing. This limitation arises because distributed checkpoints are tightly coupled to specific model parallelism and hardware configurations, preventing large-scale training jobs from efficiently adapting to hardware failures or resource elasticity. This paper presents Universal Checkpointing (UCP), a novel checkpointing system that enables flexible and efficient DNN training with reconfigurable parallelism. UCP overcomes challenges in existing systems by decoupling checkpoint structure from parallel training strategies and hardware configurations. In addition, we present a pattern-based reconfiguration pipeline that enables automatic, flexible, and efficient mapping of checkpoint state to various parallelism strategies. Evaluation on a range of DNN models, including state-of-the-art dense and sparse LLMs, shows that UCP enables reconfiguration for a broader set of widely used parallelism strategies than existing solutions while adding negligible reconfiguration cost. UCP has been successfully employed in real LLM training workloads, greatly enhancing their flexibility and resilience to dynamic hardware environments.",
-        "published": "2024-06-27",
-        "relevance": 0.860257515327417
-      },
-      {
-        "arxiv_id": "2211.04305",
-        "title": "Designing an Adaptive Application-Level Checkpoint Management System for Malleable MPI Applications",
-        "abstract": "Dynamic resource management opens up numerous opportunities in High Performance Computing. It improves the system-level services as well as application performance. Checkpointing can also be deemed as a system-level service and can reap the benefits offered by dynamism. A checkpointing system can have better resource availability by integrating with a malleable resource management system. In addition to fault tolerance, the checkpointing system can cater to the data redistribution demand of malleable applications during resource change. Therefore, we propose iCheck, an adaptive application-level checkpoint management system that can efficiently utilize the system and application level dynamism to provide better checkpointing and data redistribution services to applications.",
-        "published": "2022-11-08",
-        "relevance": 0.8077306626609889
-      },
-      {
-        "arxiv_id": "2210.02589",
-        "title": "Spot-on: A Checkpointing Framework for Fault-Tolerant Long-running Workloads on Cloud Spot Instances",
-        "abstract": "Spot instances offer a cost-effective solution for applications running in the cloud computing environment. However, it is challenging to run long-running jobs on spot instances because they are subject to unpredictable evictions. Here, we present Spot-on, a generic software framework that supports fault-tolerant long-running workloads on spot instances through checkpoint and restart. Spot-on leverages existing checkpointing packages and is compatible with the major cloud vendors. Using a genomics application as a test case, we demonstrated that Spot-on supports both application-specific and transparent checkpointing methods. Compared to running applications using on-demand instances, it allows the completion of these workloads for a significant reduction in computing costs. Compared to running applications using application-specific checkpoint mechanisms, transparent checkpoint-protected applications reduce runtime by up to 40%, leading to further cost savings of up to 86%.",
-        "published": "2022-10-05",
-        "relevance": 0.8012520724448481
-      }
-    ],
-    "warmup": [
-      {
-        "arxiv_id": "2609.33041",
-        "title": "Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons",
-        "abstract": "Learning-rate warmup is a standard technique in language-model training, yet its duration remains largely heuristic. Common approaches use either a fixed number of updates or a fixed fraction of the training horizon, two choices that imply very different scaling as training gets longer. When should warmup stay fixed, and when should it grow with the horizon? We address this question with a quadratic model whose modes respond differently to the peak learning rate. Warmup slows progress in directions that already contract well at the peak rate, but can remove persistent error in directions near the stability edge, with higher peak rates shifting the balance toward longer warmup durations. This yields a compact horizon scaling law that captures regimes ranging from essentially no warmup, through fixed-duration warmup, to durations that grow with the training horizon, and explains how the preferred regime changes with peak learning rate. Because the law captures the tradeoff between giving up early progress and improving the trajectory that follows, it can be fit using shorter runs and used to predict warmup at substantially longer horizons. Together, our results explain several familiar properties of warmup through a single tradeoff and suggest treating warmup duration as a horizon-dependent hyperparameter rather than a fixed training heuristic.",
-        "published": "2026-09-27",
-        "relevance": 0.9820777805221428
-      },
-      {
-        "arxiv_id": "2410.23922",
-        "title": "Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training",
-        "abstract": "Learning Rate Warmup is a popular heuristic for training neural networks, especially at larger batch sizes, despite limited understanding of its benefits. Warmup decreases the update size $\u0394\\mathbf{w}_t = \u03b7_t \\mathbf{u}_t$ early in training by using lower values for the learning rate $\u03b7_t$. In this work we argue that warmup benefits training by keeping the overall size of $\u0394\\mathbf{w}_t$ limited, counteracting large initial values of $\\mathbf{u}_t$. Focusing on small-scale GPT training with AdamW/Lion, we explore the following question: Why and by which criteria are early updates $\\mathbf{u}_t$ too large? We analyze different metrics for the update size including the $\\ell_2$-norm, resulting directional change, and impact on the representations of the network, providing a new perspective on warmup. In particular, we find that warmup helps counteract large angular updates as well as a limited critical batch size early in training. Finally, we show that the need for warmup can be significantly reduced or eliminated by modifying the optimizer to explicitly normalize $\\mathbf{u}_t$ based on the aforementioned metrics.",
-        "published": "2024-10-31",
-        "relevance": 0.8888777678637703
-      },
-      {
-        "arxiv_id": "2406.09405",
-        "title": "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements",
-        "abstract": "It is common in deep learning to warm up the learning rate $\u03b7$, often by a linear schedule between $\u03b7_{\\text{init}} = 0$ and a predetermined target $\u03b7_{\\text{trgt}}$. In this paper, we show through systematic experiments using SGD and Adam that the overwhelming benefit of warmup arises from allowing the network to tolerate larger $\u03b7_{\\text{trgt}}$ {by forcing the network to more well-conditioned areas of the loss landscape}. The ability to handle larger $\u03b7_{\\text{trgt}}$ makes hyperparameter tuning more robust while improving the final performance. We uncover different regimes of operation during the warmup period, depending on whether training starts off in a progressive sharpening or sharpness reduction phase, which in turn depends on the initialization and parameterization. Using these insights, we show how $\u03b7_{\\text{init}}$ can be properly chosen by utilizing the loss catapult mechanism, which saves on the number of warmup steps, in some cases completely eliminating the need for warmup. We also suggest an initialization for the variance in Adam which provides benefits similar to warmup.",
-        "published": "2024-06-13",
-        "relevance": 0.8282497101973841
-      },
-      {
-        "arxiv_id": "2103.17268",
-        "title": "Fast Certified Robust Training with Short Warmup",
-        "abstract": "Recently, bound propagation based certified robust training methods have been proposed for training neural networks with certifiable robustness guarantees. Despite that state-of-the-art (SOTA) methods including interval bound propagation (IBP) and CROWN-IBP have per-batch training complexity similar to standard neural network training, they usually use a long warmup schedule with hundreds or thousands epochs to reach SOTA performance and are thus still costly. In this paper, we identify two important issues in existing methods, namely exploded bounds at initialization, and the imbalance in ReLU activation states and improve IBP training. These two issues make certified training difficult and unstable, and thereby long warmup schedules were needed in prior works. To mitigate these issues and conduct faster certified training with shorter warmup, we propose three improvements based on IBP training: 1) We derive a new weight initialization method for IBP training; 2) We propose to fully add Batch Normalization (BN) to each layer in the model, since we find BN can reduce the imbalance in ReLU activation states; 3) We also design regularization to explicitly tighten certified bounds and balance ReLU activation states during wamrup. We are able to obtain 65.03% verified error on CIFAR-10 ($\u03b5=\\frac{8}{255}$) and 82.36% verified error on TinyImageNet ($\u03b5=\\frac{1}{255}$) using very short training schedules (160 and 80 total epochs, respectively), outperforming literature SOTA trained with hundreds or thousands epochs under the same network architecture. The code is available at https://github.com/shizhouxing/Fast-Certified-Robust-Training.",
-        "published": "2021-03-31",
-        "relevance": 0.8198167292608068
-      },
-      {
-        "arxiv_id": "2002.01576",
-        "title": "Large Batch Training Does Not Need Warmup",
-        "abstract": "Training deep neural networks using a large batch size has shown promising results and benefits many real-world applications. However, the optimizer converges slowly at early epochs and there is a gap between large-batch deep learning optimization heuristics and theoretical underpinnings. In this paper, we propose a novel Complete Layer-wise Adaptive Rate Scaling (CLARS) algorithm for large-batch training. We also analyze the convergence rate of the proposed method by introducing a new fine-grained analysis of gradient-based methods. Based on our analysis, we bridge the gap and illustrate the theoretical insights for three popular large-batch training techniques, including linear learning rate scaling, gradual warmup, and layer-wise adaptive rate scaling. Extensive experiments demonstrate that the proposed algorithm outperforms gradual warmup technique by a large margin and defeats the convergence of the state-of-the-art large-batch optimizer in training advanced deep neural networks (ResNet, DenseNet, MobileNet) on ImageNet dataset.",
-        "published": "2020-02-04",
-        "relevance": 0.7993335239904755
-      }
-    ],
-    "sgd": [
-      {
-        "arxiv_id": "2409.13198",
-        "title": "Exploring Scaling Laws for Local SGD in Large Language Model Training",
-        "abstract": "This paper investigates scaling laws for local SGD in LLM training, a distributed optimization algorithm that facilitates training on loosely connected devices. Through extensive experiments, we show that local SGD achieves competitive results compared to conventional methods, given equivalent model parameters, datasets, and computational resources. Furthermore, we explore the application of local SGD in various practical scenarios, including multi-cluster setups and edge computing environments. Our findings elucidate the necessary conditions for effective multi-cluster LLM training and examine the potential and limitations of leveraging edge computing resources in the LLM training process. This demonstrates its viability as an alternative to single large-cluster training.",
-        "published": "2024-09-20",
-        "relevance": 0.8589814468595159
-      },
-      {
-        "arxiv_id": "1509.05765",
-        "title": "\"Oddball SGD\": Novelty Driven Stochastic Gradient Descent for Training Deep Neural Networks",
-        "abstract": "Stochastic Gradient Descent (SGD) is arguably the most popular of the machine learning methods applied to training deep neural networks (DNN) today. It has recently been demonstrated that SGD can be statistically biased so that certain elements of the training set are learned more rapidly than others. In this article, we place SGD into a feedback loop whereby the probability of selection is proportional to error magnitude. This provides a novelty-driven oddball SGD process that learns more rapidly than traditional SGD by prioritising those elements of the training set with the largest novelty (error). In our DNN example, oddball SGD trains some 50x faster than regular SGD.",
-        "published": "2015-09-18",
-        "relevance": 0.8500695814275295
-      },
-      {
-        "arxiv_id": "1906.05936",
-        "title": "Layered SGD: A Decentralized and Synchronous SGD Algorithm for Scalable Deep Neural Network Training",
-        "abstract": "Stochastic Gradient Descent (SGD) is the most popular algorithm for training deep neural networks (DNNs). As larger networks and datasets cause longer training times, training on distributed systems is common and distributed SGD variants, mainly asynchronous and synchronous SGD, are widely used. Asynchronous SGD is communication efficient but suffers from accuracy degradation due to delayed parameter updating. Synchronous SGD becomes communication intensive when the number of nodes increases regardless of its advantage. To address these issues, we introduce Layered SGD (LSGD), a new decentralized synchronous SGD algorithm. LSGD partitions computing resources into subgroups that each contain a communication layer (communicator) and a computation layer (worker). Each subgroup has centralized communication for parameter updates while communication between subgroups is handled by communicators. As a result, communication time is overlapped with I/O latency of workers. The efficiency of the algorithm is tested by training a deep network on the ImageNet classification task.",
-        "published": "2019-06-13",
-        "relevance": 0.8372180882639612
-      },
-      {
-        "arxiv_id": "2504.05618",
-        "title": "Technical Report: Full Version of Analyzing and Optimizing Perturbation of DP-SGD Geometrically",
-        "abstract": "Differential privacy (DP) has become a prevalent privacy model in a wide range of machine learning tasks, especially after the debut of DP-SGD. However, DP-SGD, which directly perturbs gradients in the training iterations, fails to mitigate the negative impacts of noise on gradient direction. As a result, DP-SGD is often inefficient. Although various solutions (e.g., clipping to reduce the sensitivity of gradients and amplifying privacy bounds to save privacy budgets) are proposed to trade privacy for model efficiency, the root cause of its inefficiency is yet unveiled. In this work, we first generalize DP-SGD and theoretically derive the impact of DP noise on the training process. Our analysis reveals that, in terms of a perturbed gradient, only the noise on direction has eminent impact on the model efficiency while that on magnitude can be mitigated by optimization techniques, i.e., fine-tuning gradient clipping and learning rate. Besides, we confirm that traditional DP introduces biased noise on the direction when adding unbiased noise to the gradient itself. Overall, the perturbation of DP-SGD is actually sub-optimal from a geometric perspective. Motivated by this, we design a geometric perturbation strategy GeoDP within the DP framework, which perturbs the direction and the magnitude of a gradient, respectively. By directly reducing the noise on the direction, GeoDP mitigates the negative impact of DP noise on model efficiency with the same DP guarantee. Extensive experiments on two public datasets (i.e., MNIST and CIFAR-10), one synthetic dataset and three prevalent models (i.e., Logistic Regression, CNN and ResNet) confirm the effectiveness and generality of our strategy.",
-        "published": "2025-04-08",
-        "relevance": 0.8150817379966502
-      },
-      {
-        "arxiv_id": "2402.08344",
-        "title": "Implicit Bias in Noisy-SGD: With Applications to Differentially Private Training",
-        "abstract": "Training Deep Neural Networks (DNNs) with small batches using Stochastic Gradient Descent (SGD) yields superior test performance compared to larger batches. The specific noise structure inherent to SGD is known to be responsible for this implicit bias. DP-SGD, used to ensure differential privacy (DP) in DNNs' training, adds Gaussian noise to the clipped gradients. Surprisingly, large-batch training still results in a significant decrease in performance, which poses an important challenge because strong DP guarantees necessitate the use of massive batches. We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise. We theoretically analyse the solutions obtained with continuous versions of Noisy-SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise. Thus, the performance issues of large-batch DP-SGD training are rooted in the same underlying principles as SGD, offering hope for potential improvements in large batch training strategies.",
-        "published": "2024-02-13",
-        "relevance": 0.8094698636342158
-      }
-    ],
-    "batch_norm": [
-      {
-        "arxiv_id": "2610.04881",
-        "title": "Energy-performance tradeoffs in server farms with batch services and setup times",
-        "abstract": "Data centers consume a large amount of energy, much of which is wasted due to idle servers. Turning off idle servers might be an effective power-saving solution; however, there is a trade-off between energy savings and system performance. Hence, we propose a setup queueing model with a batching policy that allows servers to process a set of jobs simultaneously to minimize power consumption while maintaining acceptable performance. We consider an M/M/c/SET--BATCH queue, a multi-server batch service queue with a fixed batch size and setup times, and some variants, including systems in which idle servers delay before turning off or systems in which the batch size is dynamic. We analyze the steady-state probabilities and system performance of the M/M/c/SET--BATCH system and its variants. Our analysis of the M/M/c/SET--BATCH system with lower computational complexity is made possible by utilizing the special structure of the model. In addition, we use simulations to compare the M/M/c/SET--BATCH model with some other variants with different setup time distributions. The results suggest that the model performs better when the setup time has a larger coefficient of variation. Our results indicate that the batching policy enhances the system performance, especially when we allow servers to be idle before turning them off.",
-        "published": "2026-10-04",
-        "relevance": 0.9225367700949408
-      },
-      {
-        "arxiv_id": "2507.07101",
-        "title": "Small Batch Size Training for Language Models: When Vanilla SGD Works, and Why Gradient Accumulation Is Wasteful",
-        "abstract": "Conventional wisdom dictates that small batch sizes make language model pretraining and fine-tuning unstable, motivating gradient accumulation, which trades off the number of optimizer steps for a proportional increase in batch size. While it is common to decrease the learning rate for smaller batch sizes, other hyperparameters are often held fixed. In this work, we revisit small batch sizes all the way down to batch size one, and we propose a rule for scaling Adam hyperparameters to small batch sizes. In particular, rather than holding the decay rate of the second moment fixed across batch sizes, we propose to hold its half-life fixed in terms of tokens. We find that small batch sizes (1) train stably, (2) are consistently more robust to hyperparameter choices, (3) achieve equal or better per-FLOP performance than larger batch sizes, and (4) notably enable stable language model training with vanilla SGD, even without momentum, despite storing no optimizer state. Building on these results, we provide practical recommendations for selecting a batch size and setting optimizer hyperparameters. We further recommend against gradient accumulation unless training on multiple devices with multiple model replicas. Finally, we show that a small batch size combined with an optimizer with a small state size can provide the performance benefits of full fine-tuning while maintaining a similar memory footprint to LoRA.",
-        "published": "2025-07-09",
-        "relevance": 0.912398577308359
-      },
-      {
-        "arxiv_id": "1802.03133",
-        "title": "Batch Kalman Normalization: Towards Training Deep Neural Networks with Micro-Batches",
-        "abstract": "As an indispensable component, Batch Normalization (BN) has successfully improved the training of deep neural networks (DNNs) with mini-batches, by normalizing the distribution of the internal representation for each hidden layer. However, the effectiveness of BN would diminish with scenario of micro-batch (e.g., less than 10 samples in a mini-batch), since the estimated statistics in a mini-batch are not reliable with insufficient samples. In this paper, we present a novel normalization method, called Batch Kalman Normalization (BKN), for improving and accelerating the training of DNNs, particularly under the context of micro-batches. Specifically, unlike the existing solutions treating each hidden layer as an isolated system, BKN treats all the layers in a network as a whole system, and estimates the statistics of a certain layer by considering the distributions of all its preceding layers, mimicking the merits of Kalman Filtering. BKN has two appealing properties. First, it enables more stable training and faster convergence compared to previous works. Second, training DNNs using BKN performs substantially better than those using BN and its variants, especially when very small mini-batches are presented. On the image classification benchmark of ImageNet, using BKN powered networks we improve upon the best-published model-zoo results: reaching 74.0% top-1 val accuracy for InceptionV2. More importantly, using BKN achieves the comparable accuracy with extremely smaller batch size, such as 64 times smaller on CIFAR-10/100 and 8 times smaller on ImageNet.",
-        "published": "2018-02-09",
-        "relevance": 0.8503665562124132
-      },
-      {
-        "arxiv_id": "2410.21676",
-        "title": "How Does Critical Batch Size Scale in Pre-training?",
-        "abstract": "Training large-scale models under given resources requires careful design of parallelism strategies. In particular, the efficiency notion of critical batch size (CBS), concerning the compromise between time and compute, marks the threshold beyond which greater data parallelism leads to diminishing returns. To operationalize it, we propose a measure of CBS and pre-train a series of auto-regressive language models, ranging from 85 million to 1.2 billion parameters, on the C4 dataset. Through extensive hyper-parameter sweeps and careful control of factors such as batch size, momentum, and learning rate along with its scheduling, we systematically investigate the impact of scale on CBS. Then we fit scaling laws with respect to model and data sizes to decouple their effects. Overall, our results demonstrate that CBS scales primarily with data size rather than model size, a finding we justify theoretically through the analysis of infinite-width limits of neural networks and infinite-dimensional least squares regression. Of independent interest, we highlight the importance of common hyper-parameter choices and strategies for studying large-scale pre-training beyond fixed training durations.",
-        "published": "2024-10-29",
-        "relevance": 0.8492887002189746
-      },
-      {
-        "arxiv_id": "2406.00552",
-        "title": "Graph Neural Network Training Systems: A Performance Comparison of Full-Graph and Mini-Batch",
-        "abstract": "Graph Neural Networks (GNNs) have gained significant attention in recent years due to their ability to learn representations of graph-structured data. Two common methods for training GNNs are mini-batch training and full-graph training. Since these two methods require different training pipelines and systems optimizations, two separate classes of GNN training systems emerged, each tailored for one method. Works that introduce systems belonging to a particular category predominantly compare them with other systems within the same category, offering limited or no comparison with systems from the other category. Some prior work also justifies its focus on one specific training method by arguing that it achieves higher accuracy than the alternative. The literature, however, has incomplete and contradictory evidence in this regard. In this paper, we provide a comprehensive empirical comparison of representative full-graph and mini-batch GNN training systems. We find that the mini-batch training systems consistently converge faster than the full-graph training ones across multiple datasets, GNN models, and system configurations. We also find that mini-batch training techniques converge to similar to or often higher accuracy values than full-graph training ones, showing that mini-batch sampling is not necessarily detrimental to accuracy. Our work highlights the importance of comparing systems across different classes, using time-to-accuracy rather than epoch time for performance comparison, and selecting appropriate hyperparameters for each training method separately.",
-        "published": "2024-06-01",
-        "relevance": 0.8398802330997632
-      }
-    ],
     "dropout": [
       {
         "arxiv_id": "2002.12915",
@@ -444,41 +296,115 @@
         "relevance": 0.8542660402371454
       }
     ],
-    "early_stopping": [
+    "checkpointing": [
       {
-        "arxiv_id": "2405.03389",
-        "title": "Don't Waste Your Time: Early Stopping Cross-Validation",
-        "abstract": "State-of-the-art automated machine learning systems for tabular data often employ cross-validation; ensuring that measured performances generalize to unseen data, or that subsequent ensembling does not overfit. However, using k-fold cross-validation instead of holdout validation drastically increases the computational cost of validating a single configuration. While ensuring better generalization and, by extension, better performance, the additional cost is often prohibitive for effective model selection within a time budget. We aim to make model selection with cross-validation more effective. Therefore, we study early stopping the process of cross-validation during model selection. We investigate the impact of early stopping on random search for two algorithms, MLP and random forest, across 36 classification datasets. We further analyze the impact of the number of folds by considering 3-, 5-, and 10-folds. In addition, we investigate the impact of early stopping with Bayesian optimization instead of random search and also repeated cross-validation. Our exploratory study shows that even a simple-to-understand and easy-to-implement method consistently allows model selection to converge faster; in ~94% of all datasets, on average by ~214%. Moreover, stopping cross-validation enables model selection to explore the search space more exhaustively by considering +167% configurations on average within one hour, while also obtaining better overall performance.",
-        "published": "2024-05-06",
-        "relevance": 0.877726666147556
+        "arxiv_id": "2509.04084",
+        "title": "Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems",
+        "abstract": "Distributed training of large deep-learning models often leads to failures, so checkpointing is commonly employed for recovery. State-of-the-art studies focus on frequent checkpointing for fast recovery from failures. However, frequent checkpointing generates numerous checkpoints, incurring substantial costs and thus degrading training performance. Recently, differential checkpointing has been proposed to reduce costs, but it is limited to recommendation systems, so its application to general distributed training systems remains unexplored. In this paper, we find that gradients generated during distributed training can be reused to construct differential checkpoints, while the former's size is smaller than the latter's, motivating us to reuse gradients for low-cost differential checkpointing. Based on this main idea, we propose \\sysname, a frequent checkpointing framework for compression-enabled training systems that reuses compressed gradients as differential checkpoints, eliminating redundant differential computation and reducing checkpoint transmission cost. Furthermore, we extend gradient reuse to scenarios without gradient compression and propose \\sysnameplus, which employs layer-wise-reuse snapshotting and incremental-merging persistence to overlap checkpointing with training execution. Experiments on diverse workloads, including billion-parameter-scale models, demonstrate that \\sysname and \\sysnameplus significantly reduce checkpointing overhead and enable checkpointing at frequencies as high as once per iteration, reducing training time by up to 89.2\\% and 81.2\\%, respectively.",
+        "published": "2025-09-04",
+        "relevance": 0.9197784236642003
       },
       {
-        "arxiv_id": "1505.07533",
-        "title": "Optimal Stopping with Random Maturity under Nonlinear Expectations",
-        "abstract": "We analyze an optimal stopping problem with random maturity under a nonlinear expectation with respect to a weakly compact set of mutually singular probabilities $\\mathcal{P}$. The maturity is specified as the hitting time to level $0$ of some continuous index process at which the payoff process is even allowed to have a positive jump. When $\\mathcal{P}$ is a collection of semimartingale measures, the optimal stopping problem can be viewed as a {\\it discretionary} stopping problem for a player who can influence both drift and volatility of the dynamic of underlying stochastic flow.",
-        "published": "2015-05-28",
-        "relevance": 0.8363464658561722
+        "arxiv_id": "2412.15411",
+        "title": "Sparse Checkpointing for Fast and Reliable MoE Training",
+        "abstract": "As large language models scale, training them requires thousands of GPUs over extended durations--making frequent failures an inevitable reality. While checkpointing remains the primary fault-tolerance mechanism, existing methods fall short when applied to Mixture-of-Experts (MoE) models. Due to their substantially larger training state, MoE models exacerbate checkpointing overheads, often causing costly stalls or prolonged recovery that severely degrade training efficiency. We present MoEvement, a distributed, in-memory checkpointing system tailored for MoE models. MoEvement is built on three key ideas: (1) sparse checkpointing, which incrementally snapshots subsets of experts across iterations to reduce overhead; (2) a sparse-to-dense checkpoint conversion mechanism that incrementally reconstructs consistent dense checkpoints from sparse snapshots; and (3) upstream logging of activations and gradients at pipeline-stage boundaries, enabling localized recovery without re-executing unaffected workers. Evaluations across diverse MoE models with up to 64 experts show that MoEvement reduces checkpointing overhead by up to $4\\times$ and recovery overhead by up to $31\\times$ compared to state-of-the-art approaches, sustaining ETTR $\\ge 0.94$ even under frequent failures (MTBF as low as 10 minutes) and delivering up to $8\\times$ overall training speedup, all without compromising synchronous training semantics. Overall, MoEvement offers a robust and scalable fault-tolerance solution for the next generation of sparsely activated models.",
+        "published": "2024-12-19",
+        "relevance": 0.8723222062192663
       },
       {
-        "arxiv_id": "2502.08016",
-        "title": "The CEGM NLSM",
-        "abstract": "Studying quantum field theories through geometric principles has revealed deep connections between physics and mathematics, including the discovery by Cachazo, Early, Guevara and Mizera (CEGM) of a generalization of biadjoint scalar amplitudes. However, extending this to generalizations of other quantum field theories remains a central challenge. Recently it has been discovered that the nonlinear sigma model (NLSM) emerges after a certain zero-preserving deformation from $\\text{tr}(\u03c6^3)$. In this work, we find a much richer story of zero-preserving deformations in the CEGM context, yielding generalized NLSM amplitudes. We prove an explicit formula for the residual embedding of an $n$-point NLSM amplitude in a mixed $n+2$ point generalized NLSM amplitude, which provides a strong consistency check on our generalization. We show that the dimension of the space of pure kinematic deformations is $\\gcd(k,n)-1$, we introduce a deformation-compatible modification of the Global Schwinger Parameterization, and we include a new proof, using methods from matroidal blade arrangements, of the linear independence for the set of planar kinematic invariants for CEGM amplitudes. Our framework is compatible with string theory through recent generalizations of the Koba-Nielsen string integral to any positive configuration space $X^+(k,n)$, where the usual Koba-Nielsen string integral corresponds to $X(2,n) = \\mathcal{M}_{0,n}$.",
-        "published": "2025-02-11",
-        "relevance": 0.8330634090941776
+        "arxiv_id": "2406.18820",
+        "title": "Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis",
+        "abstract": "Deep neural network (DNN) training continues to scale rapidly in terms of model size, data volume, and sequence length, to the point where multiple machines are required to fit large models for training. Different distributed and parallel training strategies have been developed to support large-scale DNN training by partitioning the training state across GPUs. However, existing DNN training systems provide very limited support for reconfiguring parallelism strategies in the middle of the training via checkpointing. This limitation arises because distributed checkpoints are tightly coupled to specific model parallelism and hardware configurations, preventing large-scale training jobs from efficiently adapting to hardware failures or resource elasticity. This paper presents Universal Checkpointing (UCP), a novel checkpointing system that enables flexible and efficient DNN training with reconfigurable parallelism. UCP overcomes challenges in existing systems by decoupling checkpoint structure from parallel training strategies and hardware configurations. In addition, we present a pattern-based reconfiguration pipeline that enables automatic, flexible, and efficient mapping of checkpoint state to various parallelism strategies. Evaluation on a range of DNN models, including state-of-the-art dense and sparse LLMs, shows that UCP enables reconfiguration for a broader set of widely used parallelism strategies than existing solutions while adding negligible reconfiguration cost. UCP has been successfully employed in real LLM training workloads, greatly enhancing their flexibility and resilience to dynamic hardware environments.",
+        "published": "2024-06-27",
+        "relevance": 0.860257515327417
       },
       {
-        "arxiv_id": "2310.12130",
-        "title": "Moduli Space Tilings and Lie-Theoretic Color Factors",
-        "abstract": "A detailed understanding of the moduli spaces $X(k,n)$ of $n$ points in projective $k-1$ space is essential to the investigation of generalized biadjoint scalar amplitudes, as discovered by Cachazo, Early, Guevara and Mizera (CEGM) in 2019. But in math, conventional wisdom says that it is completely hopeless due to the arbitrarily high complexity of realization spaces of oriented matroids. In this paper, we nonetheless find a path forward. We present a Lie-theoretic realization of color factors for color-dressed generalized biadjoint scalar amplitudes, formulated in terms of certain tilings of the real moduli space $X(k,n)$ and collections of logarithmic differential forms, resolving an important open question from recent work by Cachazo, Early and Zhang. The main idea is to replace the realization space decomposition of $X(k,n)$ with a large class of overlapping tilings whose topologies are individually relatively simple. So we obtain a collection of color-dressed amplitudes, each of which satisfies $U(1)$ decoupling separately. The essential complexity appears when they are all superposed.",
-        "published": "2023-10-18",
-        "relevance": 0.8232398491041728
+        "arxiv_id": "2211.04305",
+        "title": "Designing an Adaptive Application-Level Checkpoint Management System for Malleable MPI Applications",
+        "abstract": "Dynamic resource management opens up numerous opportunities in High Performance Computing. It improves the system-level services as well as application performance. Checkpointing can also be deemed as a system-level service and can reap the benefits offered by dynamism. A checkpointing system can have better resource availability by integrating with a malleable resource management system. In addition to fault tolerance, the checkpointing system can cater to the data redistribution demand of malleable applications during resource change. Therefore, we propose iCheck, an adaptive application-level checkpoint management system that can efficiently utilize the system and application level dynamism to provide better checkpointing and data redistribution services to applications.",
+        "published": "2022-11-08",
+        "relevance": 0.8077306626609889
       },
       {
-        "arxiv_id": "2003.07958",
-        "title": "Minimal Kinematics: An All $k$ and $n$ Peek into ${\\rm Trop}^+{\\rm G}(k,n)$",
-        "abstract": "In this note we present a formula for the Cachazo-Early-Guevara-Mizera (CEGM) generalized biadjoint amplitudes for all $k$ and $n$ on what we call the minimal kinematics. We prove that on the minimal kinematics, the scattering equations on the configuration space of $n$ points on $\\mathbb{CP}^{k-1}$ has a unique solution, and that this solution is in the image of a Veronese embedding. The minimal kinematics is an all $k$ generalization of the one recently introduced by Early for $k=2$ and uses a choice of cyclic ordering. We conjecture an explicit formula for $m_n^{(k)}(\\mathbb{I},\\mathbb{I})$ which we have checked analytically through $n=10$ for all $k$. The answer is a simple rational function which has only simple poles; the poles have the combinatorial structure of the circulant graph ${\\rm C}_n^{(1,2,\\dots, k-2)}$. Generalized biadjoint amplitudes can also be evaluated using the positive tropical Grassmannian ${\\rm Tr}^+{\\rm G}(k,n)$ in terms of generalized planar Feynman diagrams. We find perfect agreement between both definitions for all cases where the latter is known in the literature. In particular, this gives the first strong consistency check on the $90\\,608$ planar arrays for ${\\rm Tr}^+{\\rm G}(4,8)$ recently computed by Cachazo, Guevara, Umbert and Zhang. We also introduce another class of special kinematics called planar-basis kinematics which generalizes the one introduced by Cachazo, He and Yuan for $k=2$ and uses the planar basis recently introduced by Early for all $k$. Based on numerical computations through $n=8$ for all $k$, we conjecture that on the planar-basis kinematics $m_n^{(k)}(\\mathbb{I},\\mathbb{I})$ evaluates to the multidimensional Catalan numbers, suggesting the possibility of novel combinatorial interpretations. For $k=2$ these are the standard Catalan numbers.",
-        "published": "2020-03-17",
-        "relevance": 0.8181590152288605
+        "arxiv_id": "2210.02589",
+        "title": "Spot-on: A Checkpointing Framework for Fault-Tolerant Long-running Workloads on Cloud Spot Instances",
+        "abstract": "Spot instances offer a cost-effective solution for applications running in the cloud computing environment. However, it is challenging to run long-running jobs on spot instances because they are subject to unpredictable evictions. Here, we present Spot-on, a generic software framework that supports fault-tolerant long-running workloads on spot instances through checkpoint and restart. Spot-on leverages existing checkpointing packages and is compatible with the major cloud vendors. Using a genomics application as a test case, we demonstrated that Spot-on supports both application-specific and transparent checkpointing methods. Compared to running applications using on-demand instances, it allows the completion of these workloads for a significant reduction in computing costs. Compared to running applications using application-specific checkpoint mechanisms, transparent checkpoint-protected applications reduce runtime by up to 40%, leading to further cost savings of up to 86%.",
+        "published": "2022-10-05",
+        "relevance": 0.8012520724448481
+      }
+    ],
+    "batch_norm": [
+      {
+        "arxiv_id": "2610.04881",
+        "title": "Energy-performance tradeoffs in server farms with batch services and setup times",
+        "abstract": "Data centers consume a large amount of energy, much of which is wasted due to idle servers. Turning off idle servers might be an effective power-saving solution; however, there is a trade-off between energy savings and system performance. Hence, we propose a setup queueing model with a batching policy that allows servers to process a set of jobs simultaneously to minimize power consumption while maintaining acceptable performance. We consider an M/M/c/SET--BATCH queue, a multi-server batch service queue with a fixed batch size and setup times, and some variants, including systems in which idle servers delay before turning off or systems in which the batch size is dynamic. We analyze the steady-state probabilities and system performance of the M/M/c/SET--BATCH system and its variants. Our analysis of the M/M/c/SET--BATCH system with lower computational complexity is made possible by utilizing the special structure of the model. In addition, we use simulations to compare the M/M/c/SET--BATCH model with some other variants with different setup time distributions. The results suggest that the model performs better when the setup time has a larger coefficient of variation. Our results indicate that the batching policy enhances the system performance, especially when we allow servers to be idle before turning them off.",
+        "published": "2026-10-04",
+        "relevance": 0.9225367700949408
+      },
+      {
+        "arxiv_id": "2507.07101",
+        "title": "Small Batch Size Training for Language Models: When Vanilla SGD Works, and Why Gradient Accumulation Is Wasteful",
+        "abstract": "Conventional wisdom dictates that small batch sizes make language model pretraining and fine-tuning unstable, motivating gradient accumulation, which trades off the number of optimizer steps for a proportional increase in batch size. While it is common to decrease the learning rate for smaller batch sizes, other hyperparameters are often held fixed. In this work, we revisit small batch sizes all the way down to batch size one, and we propose a rule for scaling Adam hyperparameters to small batch sizes. In particular, rather than holding the decay rate of the second moment fixed across batch sizes, we propose to hold its half-life fixed in terms of tokens. We find that small batch sizes (1) train stably, (2) are consistently more robust to hyperparameter choices, (3) achieve equal or better per-FLOP performance than larger batch sizes, and (4) notably enable stable language model training with vanilla SGD, even without momentum, despite storing no optimizer state. Building on these results, we provide practical recommendations for selecting a batch size and setting optimizer hyperparameters. We further recommend against gradient accumulation unless training on multiple devices with multiple model replicas. Finally, we show that a small batch size combined with an optimizer with a small state size can provide the performance benefits of full fine-tuning while maintaining a similar memory footprint to LoRA.",
+        "published": "2025-07-09",
+        "relevance": 0.912398577308359
+      },
+      {
+        "arxiv_id": "1802.03133",
+        "title": "Batch Kalman Normalization: Towards Training Deep Neural Networks with Micro-Batches",
+        "abstract": "As an indispensable component, Batch Normalization (BN) has successfully improved the training of deep neural networks (DNNs) with mini-batches, by normalizing the distribution of the internal representation for each hidden layer. However, the effectiveness of BN would diminish with scenario of micro-batch (e.g., less than 10 samples in a mini-batch), since the estimated statistics in a mini-batch are not reliable with insufficient samples. In this paper, we present a novel normalization method, called Batch Kalman Normalization (BKN), for improving and accelerating the training of DNNs, particularly under the context of micro-batches. Specifically, unlike the existing solutions treating each hidden layer as an isolated system, BKN treats all the layers in a network as a whole system, and estimates the statistics of a certain layer by considering the distributions of all its preceding layers, mimicking the merits of Kalman Filtering. BKN has two appealing properties. First, it enables more stable training and faster convergence compared to previous works. Second, training DNNs using BKN performs substantially better than those using BN and its variants, especially when very small mini-batches are presented. On the image classification benchmark of ImageNet, using BKN powered networks we improve upon the best-published model-zoo results: reaching 74.0% top-1 val accuracy for InceptionV2. More importantly, using BKN achieves the comparable accuracy with extremely smaller batch size, such as 64 times smaller on CIFAR-10/100 and 8 times smaller on ImageNet.",
+        "published": "2018-02-09",
+        "relevance": 0.8503665562124132
+      },
+      {
+        "arxiv_id": "2410.21676",
+        "title": "How Does Critical Batch Size Scale in Pre-training?",
+        "abstract": "Training large-scale models under given resources requires careful design of parallelism strategies. In particular, the efficiency notion of critical batch size (CBS), concerning the compromise between time and compute, marks the threshold beyond which greater data parallelism leads to diminishing returns. To operationalize it, we propose a measure of CBS and pre-train a series of auto-regressive language models, ranging from 85 million to 1.2 billion parameters, on the C4 dataset. Through extensive hyper-parameter sweeps and careful control of factors such as batch size, momentum, and learning rate along with its scheduling, we systematically investigate the impact of scale on CBS. Then we fit scaling laws with respect to model and data sizes to decouple their effects. Overall, our results demonstrate that CBS scales primarily with data size rather than model size, a finding we justify theoretically through the analysis of infinite-width limits of neural networks and infinite-dimensional least squares regression. Of independent interest, we highlight the importance of common hyper-parameter choices and strategies for studying large-scale pre-training beyond fixed training durations.",
+        "published": "2024-10-29",
+        "relevance": 0.8492887002189746
+      },
+      {
+        "arxiv_id": "2406.00552",
+        "title": "Graph Neural Network Training Systems: A Performance Comparison of Full-Graph and Mini-Batch",
+        "abstract": "Graph Neural Networks (GNNs) have gained significant attention in recent years due to their ability to learn representations of graph-structured data. Two common methods for training GNNs are mini-batch training and full-graph training. Since these two methods require different training pipelines and systems optimizations, two separate classes of GNN training systems emerged, each tailored for one method. Works that introduce systems belonging to a particular category predominantly compare them with other systems within the same category, offering limited or no comparison with systems from the other category. Some prior work also justifies its focus on one specific training method by arguing that it achieves higher accuracy than the alternative. The literature, however, has incomplete and contradictory evidence in this regard. In this paper, we provide a comprehensive empirical comparison of representative full-graph and mini-batch GNN training systems. We find that the mini-batch training systems consistently converge faster than the full-graph training ones across multiple datasets, GNN models, and system configurations. We also find that mini-batch training techniques converge to similar to or often higher accuracy values than full-graph training ones, showing that mini-batch sampling is not necessarily detrimental to accuracy. Our work highlights the importance of comparing systems across different classes, using time-to-accuracy rather than epoch time for performance comparison, and selecting appropriate hyperparameters for each training method separately.",
+        "published": "2024-06-01",
+        "relevance": 0.8398802330997632
+      }
+    ],
+    "sgd": [
+      {
+        "arxiv_id": "2409.13198",
+        "title": "Exploring Scaling Laws for Local SGD in Large Language Model Training",
+        "abstract": "This paper investigates scaling laws for local SGD in LLM training, a distributed optimization algorithm that facilitates training on loosely connected devices. Through extensive experiments, we show that local SGD achieves competitive results compared to conventional methods, given equivalent model parameters, datasets, and computational resources. Furthermore, we explore the application of local SGD in various practical scenarios, including multi-cluster setups and edge computing environments. Our findings elucidate the necessary conditions for effective multi-cluster LLM training and examine the potential and limitations of leveraging edge computing resources in the LLM training process. This demonstrates its viability as an alternative to single large-cluster training.",
+        "published": "2024-09-20",
+        "relevance": 0.8589814468595159
+      },
+      {
+        "arxiv_id": "1509.05765",
+        "title": "\"Oddball SGD\": Novelty Driven Stochastic Gradient Descent for Training Deep Neural Networks",
+        "abstract": "Stochastic Gradient Descent (SGD) is arguably the most popular of the machine learning methods applied to training deep neural networks (DNN) today. It has recently been demonstrated that SGD can be statistically biased so that certain elements of the training set are learned more rapidly than others. In this article, we place SGD into a feedback loop whereby the probability of selection is proportional to error magnitude. This provides a novelty-driven oddball SGD process that learns more rapidly than traditional SGD by prioritising those elements of the training set with the largest novelty (error). In our DNN example, oddball SGD trains some 50x faster than regular SGD.",
+        "published": "2015-09-18",
+        "relevance": 0.8500695814275295
+      },
+      {
+        "arxiv_id": "1906.05936",
+        "title": "Layered SGD: A Decentralized and Synchronous SGD Algorithm for Scalable Deep Neural Network Training",
+        "abstract": "Stochastic Gradient Descent (SGD) is the most popular algorithm for training deep neural networks (DNNs). As larger networks and datasets cause longer training times, training on distributed systems is common and distributed SGD variants, mainly asynchronous and synchronous SGD, are widely used. Asynchronous SGD is communication efficient but suffers from accuracy degradation due to delayed parameter updating. Synchronous SGD becomes communication intensive when the number of nodes increases regardless of its advantage. To address these issues, we introduce Layered SGD (LSGD), a new decentralized synchronous SGD algorithm. LSGD partitions computing resources into subgroups that each contain a communication layer (communicator) and a computation layer (worker). Each subgroup has centralized communication for parameter updates while communication between subgroups is handled by communicators. As a result, communication time is overlapped with I/O latency of workers. The efficiency of the algorithm is tested by training a deep network on the ImageNet classification task.",
+        "published": "2019-06-13",
+        "relevance": 0.8372180882639612
+      },
+      {
+        "arxiv_id": "2504.05618",
+        "title": "Technical Report: Full Version of Analyzing and Optimizing Perturbation of DP-SGD Geometrically",
+        "abstract": "Differential privacy (DP) has become a prevalent privacy model in a wide range of machine learning tasks, especially after the debut of DP-SGD. However, DP-SGD, which directly perturbs gradients in the training iterations, fails to mitigate the negative impacts of noise on gradient direction. As a result, DP-SGD is often inefficient. Although various solutions (e.g., clipping to reduce the sensitivity of gradients and amplifying privacy bounds to save privacy budgets) are proposed to trade privacy for model efficiency, the root cause of its inefficiency is yet unveiled. In this work, we first generalize DP-SGD and theoretically derive the impact of DP noise on the training process. Our analysis reveals that, in terms of a perturbed gradient, only the noise on direction has eminent impact on the model efficiency while that on magnitude can be mitigated by optimization techniques, i.e., fine-tuning gradient clipping and learning rate. Besides, we confirm that traditional DP introduces biased noise on the direction when adding unbiased noise to the gradient itself. Overall, the perturbation of DP-SGD is actually sub-optimal from a geometric perspective. Motivated by this, we design a geometric perturbation strategy GeoDP within the DP framework, which perturbs the direction and the magnitude of a gradient, respectively. By directly reducing the noise on the direction, GeoDP mitigates the negative impact of DP noise on model efficiency with the same DP guarantee. Extensive experiments on two public datasets (i.e., MNIST and CIFAR-10), one synthetic dataset and three prevalent models (i.e., Logistic Regression, CNN and ResNet) confirm the effectiveness and generality of our strategy.",
+        "published": "2025-04-08",
+        "relevance": 0.8150817379966502
+      },
+      {
+        "arxiv_id": "2402.08344",
+        "title": "Implicit Bias in Noisy-SGD: With Applications to Differentially Private Training",
+        "abstract": "Training Deep Neural Networks (DNNs) with small batches using Stochastic Gradient Descent (SGD) yields superior test performance compared to larger batches. The specific noise structure inherent to SGD is known to be responsible for this implicit bias. DP-SGD, used to ensure differential privacy (DP) in DNNs' training, adds Gaussian noise to the clipped gradients. Surprisingly, large-batch training still results in a significant decrease in performance, which poses an important challenge because strong DP guarantees necessitate the use of massive batches. We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise. We theoretically analyse the solutions obtained with continuous versions of Noisy-SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise. Thus, the performance issues of large-batch DP-SGD training are rooted in the same underlying principles as SGD, offering hope for potential improvements in large batch training strategies.",
+        "published": "2024-02-13",
+        "relevance": 0.8094698636342158
       }
     ],
     "gradient_clipping": [
@@ -516,6 +442,80 @@
         "abstract": "The success of modern machine learning is due in part to the adaptive optimization methods that have been developed to deal with the difficulties of training large models over complex datasets. One such method is gradient clipping: a practical procedure with limited theoretical underpinnings. In this work, we study clipping in a least squares problem under streaming SGD. We develop a theoretical analysis of the learning dynamics in the limit of large intrinsic dimension-a model and dataset dependent notion of dimensionality. In this limit we find a deterministic equation that describes the evolution of the loss and demonstrate that this equation predicts the path of clipped SGD on synthetic, CIFAR10, and Wikitext2 data. We show that with Gaussian noise clipping cannot improve SGD performance. Yet, in other noisy settings, clipping can provide benefits with tuning of the clipping threshold. We propose a simple heuristic for near optimal scheduling of the clipping threshold which requires the tuning of only one hyperparameter. We conclude with a discussion about the links between high-dimensional clipping and neural network training.",
         "published": "2024-06-17",
         "relevance": 0.8342063241446784
+      }
+    ],
+    "warmup": [
+      {
+        "arxiv_id": "2609.33041",
+        "title": "Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons",
+        "abstract": "Learning-rate warmup is a standard technique in language-model training, yet its duration remains largely heuristic. Common approaches use either a fixed number of updates or a fixed fraction of the training horizon, two choices that imply very different scaling as training gets longer. When should warmup stay fixed, and when should it grow with the horizon? We address this question with a quadratic model whose modes respond differently to the peak learning rate. Warmup slows progress in directions that already contract well at the peak rate, but can remove persistent error in directions near the stability edge, with higher peak rates shifting the balance toward longer warmup durations. This yields a compact horizon scaling law that captures regimes ranging from essentially no warmup, through fixed-duration warmup, to durations that grow with the training horizon, and explains how the preferred regime changes with peak learning rate. Because the law captures the tradeoff between giving up early progress and improving the trajectory that follows, it can be fit using shorter runs and used to predict warmup at substantially longer horizons. Together, our results explain several familiar properties of warmup through a single tradeoff and suggest treating warmup duration as a horizon-dependent hyperparameter rather than a fixed training heuristic.",
+        "published": "2026-09-27",
+        "relevance": 0.9820777805221428
+      },
+      {
+        "arxiv_id": "2410.23922",
+        "title": "Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training",
+        "abstract": "Learning Rate Warmup is a popular heuristic for training neural networks, especially at larger batch sizes, despite limited understanding of its benefits. Warmup decreases the update size $\u0394\\mathbf{w}_t = \u03b7_t \\mathbf{u}_t$ early in training by using lower values for the learning rate $\u03b7_t$. In this work we argue that warmup benefits training by keeping the overall size of $\u0394\\mathbf{w}_t$ limited, counteracting large initial values of $\\mathbf{u}_t$. Focusing on small-scale GPT training with AdamW/Lion, we explore the following question: Why and by which criteria are early updates $\\mathbf{u}_t$ too large? We analyze different metrics for the update size including the $\\ell_2$-norm, resulting directional change, and impact on the representations of the network, providing a new perspective on warmup. In particular, we find that warmup helps counteract large angular updates as well as a limited critical batch size early in training. Finally, we show that the need for warmup can be significantly reduced or eliminated by modifying the optimizer to explicitly normalize $\\mathbf{u}_t$ based on the aforementioned metrics.",
+        "published": "2024-10-31",
+        "relevance": 0.8888777678637703
+      },
+      {
+        "arxiv_id": "2406.09405",
+        "title": "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements",
+        "abstract": "It is common in deep learning to warm up the learning rate $\u03b7$, often by a linear schedule between $\u03b7_{\\text{init}} = 0$ and a predetermined target $\u03b7_{\\text{trgt}}$. In this paper, we show through systematic experiments using SGD and Adam that the overwhelming benefit of warmup arises from allowing the network to tolerate larger $\u03b7_{\\text{trgt}}$ {by forcing the network to more well-conditioned areas of the loss landscape}. The ability to handle larger $\u03b7_{\\text{trgt}}$ makes hyperparameter tuning more robust while improving the final performance. We uncover different regimes of operation during the warmup period, depending on whether training starts off in a progressive sharpening or sharpness reduction phase, which in turn depends on the initialization and parameterization. Using these insights, we show how $\u03b7_{\\text{init}}$ can be properly chosen by utilizing the loss catapult mechanism, which saves on the number of warmup steps, in some cases completely eliminating the need for warmup. We also suggest an initialization for the variance in Adam which provides benefits similar to warmup.",
+        "published": "2024-06-13",
+        "relevance": 0.8282497101973841
+      },
+      {
+        "arxiv_id": "2103.17268",
+        "title": "Fast Certified Robust Training with Short Warmup",
+        "abstract": "Recently, bound propagation based certified robust training methods have been proposed for training neural networks with certifiable robustness guarantees. Despite that state-of-the-art (SOTA) methods including interval bound propagation (IBP) and CROWN-IBP have per-batch training complexity similar to standard neural network training, they usually use a long warmup schedule with hundreds or thousands epochs to reach SOTA performance and are thus still costly. In this paper, we identify two important issues in existing methods, namely exploded bounds at initialization, and the imbalance in ReLU activation states and improve IBP training. These two issues make certified training difficult and unstable, and thereby long warmup schedules were needed in prior works. To mitigate these issues and conduct faster certified training with shorter warmup, we propose three improvements based on IBP training: 1) We derive a new weight initialization method for IBP training; 2) We propose to fully add Batch Normalization (BN) to each layer in the model, since we find BN can reduce the imbalance in ReLU activation states; 3) We also design regularization to explicitly tighten certified bounds and balance ReLU activation states during wamrup. We are able to obtain 65.03% verified error on CIFAR-10 ($\u03b5=\\frac{8}{255}$) and 82.36% verified error on TinyImageNet ($\u03b5=\\frac{1}{255}$) using very short training schedules (160 and 80 total epochs, respectively), outperforming literature SOTA trained with hundreds or thousands epochs under the same network architecture. The code is available at https://github.com/shizhouxing/Fast-Certified-Robust-Training.",
+        "published": "2021-03-31",
+        "relevance": 0.8198167292608068
+      },
+      {
+        "arxiv_id": "2002.01576",
+        "title": "Large Batch Training Does Not Need Warmup",
+        "abstract": "Training deep neural networks using a large batch size has shown promising results and benefits many real-world applications. However, the optimizer converges slowly at early epochs and there is a gap between large-batch deep learning optimization heuristics and theoretical underpinnings. In this paper, we propose a novel Complete Layer-wise Adaptive Rate Scaling (CLARS) algorithm for large-batch training. We also analyze the convergence rate of the proposed method by introducing a new fine-grained analysis of gradient-based methods. Based on our analysis, we bridge the gap and illustrate the theoretical insights for three popular large-batch training techniques, including linear learning rate scaling, gradual warmup, and layer-wise adaptive rate scaling. Extensive experiments demonstrate that the proposed algorithm outperforms gradual warmup technique by a large margin and defeats the convergence of the state-of-the-art large-batch optimizer in training advanced deep neural networks (ResNet, DenseNet, MobileNet) on ImageNet dataset.",
+        "published": "2020-02-04",
+        "relevance": 0.7993335239904755
+      }
+    ],
+    "early_stopping": [
+      {
+        "arxiv_id": "2405.03389",
+        "title": "Don't Waste Your Time: Early Stopping Cross-Validation",
+        "abstract": "State-of-the-art automated machine learning systems for tabular data often employ cross-validation; ensuring that measured performances generalize to unseen data, or that subsequent ensembling does not overfit. However, using k-fold cross-validation instead of holdout validation drastically increases the computational cost of validating a single configuration. While ensuring better generalization and, by extension, better performance, the additional cost is often prohibitive for effective model selection within a time budget. We aim to make model selection with cross-validation more effective. Therefore, we study early stopping the process of cross-validation during model selection. We investigate the impact of early stopping on random search for two algorithms, MLP and random forest, across 36 classification datasets. We further analyze the impact of the number of folds by considering 3-, 5-, and 10-folds. In addition, we investigate the impact of early stopping with Bayesian optimization instead of random search and also repeated cross-validation. Our exploratory study shows that even a simple-to-understand and easy-to-implement method consistently allows model selection to converge faster; in ~94% of all datasets, on average by ~214%. Moreover, stopping cross-validation enables model selection to explore the search space more exhaustively by considering +167% configurations on average within one hour, while also obtaining better overall performance.",
+        "published": "2024-05-06",
+        "relevance": 0.877726666147556
+      },
+      {
+        "arxiv_id": "1505.07533",
+        "title": "Optimal Stopping with Random Maturity under Nonlinear Expectations",
+        "abstract": "We analyze an optimal stopping problem with random maturity under a nonlinear expectation with respect to a weakly compact set of mutually singular probabilities $\\mathcal{P}$. The maturity is specified as the hitting time to level $0$ of some continuous index process at which the payoff process is even allowed to have a positive jump. When $\\mathcal{P}$ is a collection of semimartingale measures, the optimal stopping problem can be viewed as a {\\it discretionary} stopping problem for a player who can influence both drift and volatility of the dynamic of underlying stochastic flow.",
+        "published": "2015-05-28",
+        "relevance": 0.8363464658561722
+      },
+      {
+        "arxiv_id": "2502.08016",
+        "title": "The CEGM NLSM",
+        "abstract": "Studying quantum field theories through geometric principles has revealed deep connections between physics and mathematics, including the discovery by Cachazo, Early, Guevara and Mizera (CEGM) of a generalization of biadjoint scalar amplitudes. However, extending this to generalizations of other quantum field theories remains a central challenge. Recently it has been discovered that the nonlinear sigma model (NLSM) emerges after a certain zero-preserving deformation from $\\text{tr}(\u03c6^3)$. In this work, we find a much richer story of zero-preserving deformations in the CEGM context, yielding generalized NLSM amplitudes. We prove an explicit formula for the residual embedding of an $n$-point NLSM amplitude in a mixed $n+2$ point generalized NLSM amplitude, which provides a strong consistency check on our generalization. We show that the dimension of the space of pure kinematic deformations is $\\gcd(k,n)-1$, we introduce a deformation-compatible modification of the Global Schwinger Parameterization, and we include a new proof, using methods from matroidal blade arrangements, of the linear independence for the set of planar kinematic invariants for CEGM amplitudes. Our framework is compatible with string theory through recent generalizations of the Koba-Nielsen string integral to any positive configuration space $X^+(k,n)$, where the usual Koba-Nielsen string integral corresponds to $X(2,n) = \\mathcal{M}_{0,n}$.",
+        "published": "2025-02-11",
+        "relevance": 0.8330634090941776
+      },
+      {
+        "arxiv_id": "2310.12130",
+        "title": "Moduli Space Tilings and Lie-Theoretic Color Factors",
+        "abstract": "A detailed understanding of the moduli spaces $X(k,n)$ of $n$ points in projective $k-1$ space is essential to the investigation of generalized biadjoint scalar amplitudes, as discovered by Cachazo, Early, Guevara and Mizera (CEGM) in 2019. But in math, conventional wisdom says that it is completely hopeless due to the arbitrarily high complexity of realization spaces of oriented matroids. In this paper, we nonetheless find a path forward. We present a Lie-theoretic realization of color factors for color-dressed generalized biadjoint scalar amplitudes, formulated in terms of certain tilings of the real moduli space $X(k,n)$ and collections of logarithmic differential forms, resolving an important open question from recent work by Cachazo, Early and Zhang. The main idea is to replace the realization space decomposition of $X(k,n)$ with a large class of overlapping tilings whose topologies are individually relatively simple. So we obtain a collection of color-dressed amplitudes, each of which satisfies $U(1)$ decoupling separately. The essential complexity appears when they are all superposed.",
+        "published": "2023-10-18",
+        "relevance": 0.8232398491041728
+      },
+      {
+        "arxiv_id": "2003.07958",
+        "title": "Minimal Kinematics: An All $k$ and $n$ Peek into ${\\rm Trop}^+{\\rm G}(k,n)$",
+        "abstract": "In this note we present a formula for the Cachazo-Early-Guevara-Mizera (CEGM) generalized biadjoint amplitudes for all $k$ and $n$ on what we call the minimal kinematics. We prove that on the minimal kinematics, the scattering equations on the configuration space of $n$ points on $\\mathbb{CP}^{k-1}$ has a unique solution, and that this solution is in the image of a Veronese embedding. The minimal kinematics is an all $k$ generalization of the one recently introduced by Early for $k=2$ and uses a choice of cyclic ordering. We conjecture an explicit formula for $m_n^{(k)}(\\mathbb{I},\\mathbb{I})$ which we have checked analytically through $n=10$ for all $k$. The answer is a simple rational function which has only simple poles; the poles have the combinatorial structure of the circulant graph ${\\rm C}_n^{(1,2,\\dots, k-2)}$. Generalized biadjoint amplitudes can also be evaluated using the positive tropical Grassmannian ${\\rm Tr}^+{\\rm G}(k,n)$ in terms of generalized planar Feynman diagrams. We find perfect agreement between both definitions for all cases where the latter is known in the literature. In particular, this gives the first strong consistency check on the $90\\,608$ planar arrays for ${\\rm Tr}^+{\\rm G}(4,8)$ recently computed by Cachazo, Guevara, Umbert and Zhang. We also introduce another class of special kinematics called planar-basis kinematics which generalizes the one introduced by Cachazo, He and Yuan for $k=2$ and uses the planar basis recently introduced by Early for all $k$. Based on numerical computations through $n=8$ for all $k$, we conjecture that on the planar-basis kinematics $m_n^{(k)}(\\mathbb{I},\\mathbb{I})$ evaluates to the multidimensional Catalan numbers, suggesting the possibility of novel combinatorial interpretations. For $k=2$ these are the standard Catalan numbers.",
+        "published": "2020-03-17",
+        "relevance": 0.8181590152288605
       }
     ],
     "layer_norm": [
@@ -558,132 +558,6 @@
   },
   "gaps": [
     {
-      "technique": "checkpointing",
-      "paper": {
-        "arxiv_id": "2509.04084",
-        "title": "Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems",
-        "abstract": "Distributed training of large deep-learning models often leads to failures, so checkpointing is commonly employed for recovery. State-of-the-art studies focus on frequent checkpointing for fast recovery from failures. However, frequent checkpointing generates numerous checkpoints, incurring substantial costs and thus degrading training performance. Recently, differential checkpointing has been proposed to reduce costs, but it is limited to recommendation systems, so its application to general distributed training systems remains unexplored. In this paper, we find that gradients generated during distributed training can be reused to construct differential checkpoints, while the former's size is smaller than the latter's, motivating us to reuse gradients for low-cost differential checkpointing. Based on this main idea, we propose \\sysname, a frequent checkpointing framework for compression-enabled training systems that reuses compressed gradients as differential checkpoints, eliminating redundant differential computation and reducing checkpoint transmission cost. Furthermore, we extend gradient reuse to scenarios without gradient compression and propose \\sysnameplus, which employs layer-wise-reuse snapshotting and incremental-merging persistence to overlap checkpointing with training execution. Experiments on diverse workloads, including billion-parameter-scale models, demonstrate that \\sysname and \\sysnameplus significantly reduce checkpointing overhead and enable checkpointing at frequencies as high as once per iteration, reducing training time by up to 89.2\\% and 81.2\\%, respectively.",
-        "published": "2025-09-04",
-        "relevance": 0.9197784236642003
-      },
-      "claim": "Repo is MISSING checkpointing; Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems shows it is current best practice",
-      "reason": "The paper explicitly endorses checkpointing as current best practice for distributed training ('checkpointing is commonly employed for recovery') and proposes optimizations to it, making the absence of checkpointing in a distributed training codebase a legitimate gap.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "checkpointing",
-      "paper": {
-        "arxiv_id": "2412.15411",
-        "title": "Sparse Checkpointing for Fast and Reliable MoE Training",
-        "abstract": "As large language models scale, training them requires thousands of GPUs over extended durations--making frequent failures an inevitable reality. While checkpointing remains the primary fault-tolerance mechanism, existing methods fall short when applied to Mixture-of-Experts (MoE) models. Due to their substantially larger training state, MoE models exacerbate checkpointing overheads, often causing costly stalls or prolonged recovery that severely degrade training efficiency. We present MoEvement, a distributed, in-memory checkpointing system tailored for MoE models. MoEvement is built on three key ideas: (1) sparse checkpointing, which incrementally snapshots subsets of experts across iterations to reduce overhead; (2) a sparse-to-dense checkpoint conversion mechanism that incrementally reconstructs consistent dense checkpoints from sparse snapshots; and (3) upstream logging of activations and gradients at pipeline-stage boundaries, enabling localized recovery without re-executing unaffected workers. Evaluations across diverse MoE models with up to 64 experts show that MoEvement reduces checkpointing overhead by up to $4\\times$ and recovery overhead by up to $31\\times$ compared to state-of-the-art approaches, sustaining ETTR $\\ge 0.94$ even under frequent failures (MTBF as low as 10 minutes) and delivering up to $8\\times$ overall training speedup, all without compromising synchronous training semantics. Overall, MoEvement offers a robust and scalable fault-tolerance solution for the next generation of sparsely activated models.",
-        "published": "2024-12-19",
-        "relevance": 0.8723222062192663
-      },
-      "claim": "Repo is MISSING checkpointing; Sparse Checkpointing for Fast and Reliable MoE Training shows it is current best practice",
-      "reason": "The paper explicitly presents sparse checkpointing as a key technique for MoE training efficiency and fault tolerance, and the code context indicates checkpointing is absent from the training loop at the specified locations.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "checkpointing",
-      "paper": {
-        "arxiv_id": "2406.18820",
-        "title": "Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis",
-        "abstract": "Deep neural network (DNN) training continues to scale rapidly in terms of model size, data volume, and sequence length, to the point where multiple machines are required to fit large models for training. Different distributed and parallel training strategies have been developed to support large-scale DNN training by partitioning the training state across GPUs. However, existing DNN training systems provide very limited support for reconfiguring parallelism strategies in the middle of the training via checkpointing. This limitation arises because distributed checkpoints are tightly coupled to specific model parallelism and hardware configurations, preventing large-scale training jobs from efficiently adapting to hardware failures or resource elasticity. This paper presents Universal Checkpointing (UCP), a novel checkpointing system that enables flexible and efficient DNN training with reconfigurable parallelism. UCP overcomes challenges in existing systems by decoupling checkpoint structure from parallel training strategies and hardware configurations. In addition, we present a pattern-based reconfiguration pipeline that enables automatic, flexible, and efficient mapping of checkpoint state to various parallelism strategies. Evaluation on a range of DNN models, including state-of-the-art dense and sparse LLMs, shows that UCP enables reconfiguration for a broader set of widely used parallelism strategies than existing solutions while adding negligible reconfiguration cost. UCP has been successfully employed in real LLM training workloads, greatly enhancing their flexibility and resilience to dynamic hardware environments.",
-        "published": "2024-06-27",
-        "relevance": 0.860257515327417
-      },
-      "claim": "Repo is MISSING checkpointing; Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis shows it is current best practice",
-      "reason": "The paper explicitly presents Universal Checkpointing as a system for distributed DNN training and addresses limitations of existing checkpointing approaches, endorsing checkpointing as essential practice for large-scale training, and the absence from a basic PyTorch training loop is plausible.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "warmup",
-      "paper": {
-        "arxiv_id": "2609.33041",
-        "title": "Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons",
-        "abstract": "Learning-rate warmup is a standard technique in language-model training, yet its duration remains largely heuristic. Common approaches use either a fixed number of updates or a fixed fraction of the training horizon, two choices that imply very different scaling as training gets longer. When should warmup stay fixed, and when should it grow with the horizon? We address this question with a quadratic model whose modes respond differently to the peak learning rate. Warmup slows progress in directions that already contract well at the peak rate, but can remove persistent error in directions near the stability edge, with higher peak rates shifting the balance toward longer warmup durations. This yields a compact horizon scaling law that captures regimes ranging from essentially no warmup, through fixed-duration warmup, to durations that grow with the training horizon, and explains how the preferred regime changes with peak learning rate. Because the law captures the tradeoff between giving up early progress and improving the trajectory that follows, it can be fit using shorter runs and used to predict warmup at substantially longer horizons. Together, our results explain several familiar properties of warmup through a single tradeoff and suggest treating warmup duration as a horizon-dependent hyperparameter rather than a fixed training heuristic.",
-        "published": "2026-09-27",
-        "relevance": 0.9820777805221428
-      },
-      "claim": "Repo is MISSING warmup; Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons shows it is current best practice",
-      "reason": "The paper explicitly states that learning-rate warmup is 'a standard technique in language-model training' and provides a scaling law for optimizing warmup duration, directly endorsing warmup as a best practice that should be implemented in training loops.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "warmup",
-      "paper": {
-        "arxiv_id": "2410.23922",
-        "title": "Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training",
-        "abstract": "Learning Rate Warmup is a popular heuristic for training neural networks, especially at larger batch sizes, despite limited understanding of its benefits. Warmup decreases the update size $\u0394\\mathbf{w}_t = \u03b7_t \\mathbf{u}_t$ early in training by using lower values for the learning rate $\u03b7_t$. In this work we argue that warmup benefits training by keeping the overall size of $\u0394\\mathbf{w}_t$ limited, counteracting large initial values of $\\mathbf{u}_t$. Focusing on small-scale GPT training with AdamW/Lion, we explore the following question: Why and by which criteria are early updates $\\mathbf{u}_t$ too large? We analyze different metrics for the update size including the $\\ell_2$-norm, resulting directional change, and impact on the representations of the network, providing a new perspective on warmup. In particular, we find that warmup helps counteract large angular updates as well as a limited critical batch size early in training. Finally, we show that the need for warmup can be significantly reduced or eliminated by modifying the optimizer to explicitly normalize $\\mathbf{u}_t$ based on the aforementioned metrics.",
-        "published": "2024-10-31",
-        "relevance": 0.8888777678637703
-      },
-      "claim": "Repo is MISSING warmup; Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training shows it is current best practice",
-      "reason": "The paper explicitly identifies learning rate warmup as a popular heuristic for training neural networks and analyzes its benefits, establishing it as current practice; the claimed code locations (trainer.py:9-10) are plausibly where warmup would be implemented in a PyTorch training loop if present.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "warmup",
-      "paper": {
-        "arxiv_id": "2406.09405",
-        "title": "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements",
-        "abstract": "It is common in deep learning to warm up the learning rate $\u03b7$, often by a linear schedule between $\u03b7_{\\text{init}} = 0$ and a predetermined target $\u03b7_{\\text{trgt}}$. In this paper, we show through systematic experiments using SGD and Adam that the overwhelming benefit of warmup arises from allowing the network to tolerate larger $\u03b7_{\\text{trgt}}$ {by forcing the network to more well-conditioned areas of the loss landscape}. The ability to handle larger $\u03b7_{\\text{trgt}}$ makes hyperparameter tuning more robust while improving the final performance. We uncover different regimes of operation during the warmup period, depending on whether training starts off in a progressive sharpening or sharpness reduction phase, which in turn depends on the initialization and parameterization. Using these insights, we show how $\u03b7_{\\text{init}}$ can be properly chosen by utilizing the loss catapult mechanism, which saves on the number of warmup steps, in some cases completely eliminating the need for warmup. We also suggest an initialization for the variance in Adam which provides benefits similar to warmup.",
-        "published": "2024-06-13",
-        "relevance": 0.8282497101973841
-      },
-      "claim": "Repo is MISSING warmup; Why Warmup the Learning Rate? Underlying Mechanisms and Improvements shows it is current best practice",
-      "reason": "The paper explicitly endorses learning rate warmup as common practice in deep learning and demonstrates its benefits for improving final performance and robustness, making it a plausible and beneficial technique to add to a training loop that currently lacks it.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
-      "technique": "sgd",
-      "paper": {
-        "arxiv_id": "2409.13198",
-        "title": "Exploring Scaling Laws for Local SGD in Large Language Model Training",
-        "abstract": "This paper investigates scaling laws for local SGD in LLM training, a distributed optimization algorithm that facilitates training on loosely connected devices. Through extensive experiments, we show that local SGD achieves competitive results compared to conventional methods, given equivalent model parameters, datasets, and computational resources. Furthermore, we explore the application of local SGD in various practical scenarios, including multi-cluster setups and edge computing environments. Our findings elucidate the necessary conditions for effective multi-cluster LLM training and examine the potential and limitations of leveraging edge computing resources in the LLM training process. This demonstrates its viability as an alternative to single large-cluster training.",
-        "published": "2024-09-20",
-        "relevance": 0.8589814468595159
-      },
-      "claim": "Repo is MISSING sgd; Exploring Scaling Laws for Local SGD in Large Language Model Training shows it is current best practice",
-      "reason": "The paper explicitly investigates local SGD as a distributed optimization algorithm for LLM training and demonstrates its competitive viability as a standard practice, while the code context indicates SGD-related implementations at trainer.py locations where such techniques would normally appear.",
-      "evidence": [
-        "trainer.py:9",
-        "trainer.py:9",
-        "trainer.py:10"
-      ],
-      "kind": "missing"
-    },
-    {
       "technique": "dropout",
       "paper": {
         "arxiv_id": "2002.12915",
@@ -693,7 +567,7 @@
         "relevance": 0.8515200946490905
       },
       "claim": "Repo is MISSING dropout; The Implicit and Explicit Regularization Effects of Dropout shows it is current best practice",
-      "reason": "The paper explicitly states dropout is 'widely-used' and 'often required to obtain state-of-the-art', endorsing it as best practice, and the code context indicates it is absent from the training loop where it would normally appear.",
+      "reason": "The paper explicitly states dropout is 'widely-used' and 'often required to obtain state-of-the-art', endorsing it as best practice, and the claimed gap reports it is absent from the training loop code.",
       "evidence": [
         "trainer.py:9",
         "trainer.py:9",
@@ -774,6 +648,78 @@
       "kind": "missing"
     },
     {
+      "technique": "checkpointing",
+      "paper": {
+        "arxiv_id": "2509.04084",
+        "title": "Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems",
+        "abstract": "Distributed training of large deep-learning models often leads to failures, so checkpointing is commonly employed for recovery. State-of-the-art studies focus on frequent checkpointing for fast recovery from failures. However, frequent checkpointing generates numerous checkpoints, incurring substantial costs and thus degrading training performance. Recently, differential checkpointing has been proposed to reduce costs, but it is limited to recommendation systems, so its application to general distributed training systems remains unexplored. In this paper, we find that gradients generated during distributed training can be reused to construct differential checkpoints, while the former's size is smaller than the latter's, motivating us to reuse gradients for low-cost differential checkpointing. Based on this main idea, we propose \\sysname, a frequent checkpointing framework for compression-enabled training systems that reuses compressed gradients as differential checkpoints, eliminating redundant differential computation and reducing checkpoint transmission cost. Furthermore, we extend gradient reuse to scenarios without gradient compression and propose \\sysnameplus, which employs layer-wise-reuse snapshotting and incremental-merging persistence to overlap checkpointing with training execution. Experiments on diverse workloads, including billion-parameter-scale models, demonstrate that \\sysname and \\sysnameplus significantly reduce checkpointing overhead and enable checkpointing at frequencies as high as once per iteration, reducing training time by up to 89.2\\% and 81.2\\%, respectively.",
+        "published": "2025-09-04",
+        "relevance": 0.9197784236642003
+      },
+      "claim": "Repo is MISSING checkpointing; Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems shows it is current best practice",
+      "reason": "The paper explicitly endorses checkpointing as current best practice for distributed training ('checkpointing is commonly employed for recovery') and proposes optimizations to it, making the absence of checkpointing in a distributed training codebase a legitimate gap.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
+      "technique": "checkpointing",
+      "paper": {
+        "arxiv_id": "2412.15411",
+        "title": "Sparse Checkpointing for Fast and Reliable MoE Training",
+        "abstract": "As large language models scale, training them requires thousands of GPUs over extended durations--making frequent failures an inevitable reality. While checkpointing remains the primary fault-tolerance mechanism, existing methods fall short when applied to Mixture-of-Experts (MoE) models. Due to their substantially larger training state, MoE models exacerbate checkpointing overheads, often causing costly stalls or prolonged recovery that severely degrade training efficiency. We present MoEvement, a distributed, in-memory checkpointing system tailored for MoE models. MoEvement is built on three key ideas: (1) sparse checkpointing, which incrementally snapshots subsets of experts across iterations to reduce overhead; (2) a sparse-to-dense checkpoint conversion mechanism that incrementally reconstructs consistent dense checkpoints from sparse snapshots; and (3) upstream logging of activations and gradients at pipeline-stage boundaries, enabling localized recovery without re-executing unaffected workers. Evaluations across diverse MoE models with up to 64 experts show that MoEvement reduces checkpointing overhead by up to $4\\times$ and recovery overhead by up to $31\\times$ compared to state-of-the-art approaches, sustaining ETTR $\\ge 0.94$ even under frequent failures (MTBF as low as 10 minutes) and delivering up to $8\\times$ overall training speedup, all without compromising synchronous training semantics. Overall, MoEvement offers a robust and scalable fault-tolerance solution for the next generation of sparsely activated models.",
+        "published": "2024-12-19",
+        "relevance": 0.8723222062192663
+      },
+      "claim": "Repo is MISSING checkpointing; Sparse Checkpointing for Fast and Reliable MoE Training shows it is current best practice",
+      "reason": "The paper explicitly presents sparse checkpointing as a key technique for MoE training efficiency and fault tolerance, and the code context indicates checkpointing is absent from the training loop at the specified locations.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
+      "technique": "checkpointing",
+      "paper": {
+        "arxiv_id": "2406.18820",
+        "title": "Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis",
+        "abstract": "Deep neural network (DNN) training continues to scale rapidly in terms of model size, data volume, and sequence length, to the point where multiple machines are required to fit large models for training. Different distributed and parallel training strategies have been developed to support large-scale DNN training by partitioning the training state across GPUs. However, existing DNN training systems provide very limited support for reconfiguring parallelism strategies in the middle of the training via checkpointing. This limitation arises because distributed checkpoints are tightly coupled to specific model parallelism and hardware configurations, preventing large-scale training jobs from efficiently adapting to hardware failures or resource elasticity. This paper presents Universal Checkpointing (UCP), a novel checkpointing system that enables flexible and efficient DNN training with reconfigurable parallelism. UCP overcomes challenges in existing systems by decoupling checkpoint structure from parallel training strategies and hardware configurations. In addition, we present a pattern-based reconfiguration pipeline that enables automatic, flexible, and efficient mapping of checkpoint state to various parallelism strategies. Evaluation on a range of DNN models, including state-of-the-art dense and sparse LLMs, shows that UCP enables reconfiguration for a broader set of widely used parallelism strategies than existing solutions while adding negligible reconfiguration cost. UCP has been successfully employed in real LLM training workloads, greatly enhancing their flexibility and resilience to dynamic hardware environments.",
+        "published": "2024-06-27",
+        "relevance": 0.860257515327417
+      },
+      "claim": "Repo is MISSING checkpointing; Universal Checkpointing: A Flexible and Efficient Distributed Checkpointing System for Large-Scale DNN Training with Reconfigurable Parallelis shows it is current best practice",
+      "reason": "The paper explicitly presents Universal Checkpointing as a system for distributed DNN training and addresses limitations of existing checkpointing approaches, endorsing checkpointing as essential practice for large-scale training, and the absence from a basic PyTorch training loop is plausible.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
+      "technique": "sgd",
+      "paper": {
+        "arxiv_id": "2409.13198",
+        "title": "Exploring Scaling Laws for Local SGD in Large Language Model Training",
+        "abstract": "This paper investigates scaling laws for local SGD in LLM training, a distributed optimization algorithm that facilitates training on loosely connected devices. Through extensive experiments, we show that local SGD achieves competitive results compared to conventional methods, given equivalent model parameters, datasets, and computational resources. Furthermore, we explore the application of local SGD in various practical scenarios, including multi-cluster setups and edge computing environments. Our findings elucidate the necessary conditions for effective multi-cluster LLM training and examine the potential and limitations of leveraging edge computing resources in the LLM training process. This demonstrates its viability as an alternative to single large-cluster training.",
+        "published": "2024-09-20",
+        "relevance": 0.8589814468595159
+      },
+      "claim": "Repo is MISSING sgd; Exploring Scaling Laws for Local SGD in Large Language Model Training shows it is current best practice",
+      "reason": "The paper explicitly investigates local SGD as a distributed optimization algorithm for LLM training and demonstrates its competitive viability as a standard practice, while the code context indicates SGD-related implementations at trainer.py locations where such techniques would normally appear.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
       "technique": "gradient_clipping",
       "paper": {
         "arxiv_id": "1905.11881",
@@ -808,11 +754,65 @@
         "trainer.py:10"
       ],
       "kind": "missing"
+    },
+    {
+      "technique": "warmup",
+      "paper": {
+        "arxiv_id": "2609.33041",
+        "title": "Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons",
+        "abstract": "Learning-rate warmup is a standard technique in language-model training, yet its duration remains largely heuristic. Common approaches use either a fixed number of updates or a fixed fraction of the training horizon, two choices that imply very different scaling as training gets longer. When should warmup stay fixed, and when should it grow with the horizon? We address this question with a quadratic model whose modes respond differently to the peak learning rate. Warmup slows progress in directions that already contract well at the peak rate, but can remove persistent error in directions near the stability edge, with higher peak rates shifting the balance toward longer warmup durations. This yields a compact horizon scaling law that captures regimes ranging from essentially no warmup, through fixed-duration warmup, to durations that grow with the training horizon, and explains how the preferred regime changes with peak learning rate. Because the law captures the tradeoff between giving up early progress and improving the trajectory that follows, it can be fit using shorter runs and used to predict warmup at substantially longer horizons. Together, our results explain several familiar properties of warmup through a single tradeoff and suggest treating warmup duration as a horizon-dependent hyperparameter rather than a fixed training heuristic.",
+        "published": "2026-09-27",
+        "relevance": 0.9820777805221428
+      },
+      "claim": "Repo is MISSING warmup; Balancing Early Performance Sacrifices with Long-Term Gains: Scaling Learning-Rate Warmup Duration Across Training Horizons shows it is current best practice",
+      "reason": "The paper explicitly states that learning-rate warmup is 'a standard technique in language-model training' and provides a scaling law for optimizing warmup duration, directly endorsing warmup as a best practice that should be implemented in training loops.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
+      "technique": "warmup",
+      "paper": {
+        "arxiv_id": "2410.23922",
+        "title": "Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training",
+        "abstract": "Learning Rate Warmup is a popular heuristic for training neural networks, especially at larger batch sizes, despite limited understanding of its benefits. Warmup decreases the update size $\u0394\\mathbf{w}_t = \u03b7_t \\mathbf{u}_t$ early in training by using lower values for the learning rate $\u03b7_t$. In this work we argue that warmup benefits training by keeping the overall size of $\u0394\\mathbf{w}_t$ limited, counteracting large initial values of $\\mathbf{u}_t$. Focusing on small-scale GPT training with AdamW/Lion, we explore the following question: Why and by which criteria are early updates $\\mathbf{u}_t$ too large? We analyze different metrics for the update size including the $\\ell_2$-norm, resulting directional change, and impact on the representations of the network, providing a new perspective on warmup. In particular, we find that warmup helps counteract large angular updates as well as a limited critical batch size early in training. Finally, we show that the need for warmup can be significantly reduced or eliminated by modifying the optimizer to explicitly normalize $\\mathbf{u}_t$ based on the aforementioned metrics.",
+        "published": "2024-10-31",
+        "relevance": 0.8888777678637703
+      },
+      "claim": "Repo is MISSING warmup; Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training shows it is current best practice",
+      "reason": "The paper explicitly identifies learning rate warmup as a popular heuristic for training neural networks and analyzes its benefits, establishing it as current practice; the claimed code locations (trainer.py:9-10) are plausibly where warmup would be implemented in a PyTorch training loop if present.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
+    },
+    {
+      "technique": "warmup",
+      "paper": {
+        "arxiv_id": "2406.09405",
+        "title": "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements",
+        "abstract": "It is common in deep learning to warm up the learning rate $\u03b7$, often by a linear schedule between $\u03b7_{\\text{init}} = 0$ and a predetermined target $\u03b7_{\\text{trgt}}$. In this paper, we show through systematic experiments using SGD and Adam that the overwhelming benefit of warmup arises from allowing the network to tolerate larger $\u03b7_{\\text{trgt}}$ {by forcing the network to more well-conditioned areas of the loss landscape}. The ability to handle larger $\u03b7_{\\text{trgt}}$ makes hyperparameter tuning more robust while improving the final performance. We uncover different regimes of operation during the warmup period, depending on whether training starts off in a progressive sharpening or sharpness reduction phase, which in turn depends on the initialization and parameterization. Using these insights, we show how $\u03b7_{\\text{init}}$ can be properly chosen by utilizing the loss catapult mechanism, which saves on the number of warmup steps, in some cases completely eliminating the need for warmup. We also suggest an initialization for the variance in Adam which provides benefits similar to warmup.",
+        "published": "2024-06-13",
+        "relevance": 0.8282497101973841
+      },
+      "claim": "Repo is MISSING warmup; Why Warmup the Learning Rate? Underlying Mechanisms and Improvements shows it is current best practice",
+      "reason": "The paper explicitly endorses learning rate warmup as common practice in deep learning and demonstrates its benefits for improving final performance and robustness, making it a plausible and beneficial technique to add to a training loop that currently lacks it.",
+      "evidence": [
+        "trainer.py:9",
+        "trainer.py:9",
+        "trainer.py:10"
+      ],
+      "kind": "missing"
     }
   ],
   "issues": [],
   "prs": [],
   "tokens_used": 0,
   "cost_usd": 0.0,
-  "started_at": 1791819334.493147
+  "started_at": 1791819458.842568
 }
