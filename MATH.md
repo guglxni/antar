@@ -112,6 +112,37 @@ $$
 With retries: $(1 - 0.1^3)^{20} = 0.999^{20} \approx 0.98$. **Retries are the difference
 between a demo that fails live and one that doesn't.** This justifies the recovery loop.
 
+## §8. Harness learning — test-time adaptation (arXiv:2609.35738)
+
+The Coder's self-correction loop is the paper's inner meta-learning loop, used at inference
+time (proposer & solver frozen). The adaptation objective over $T$ rounds:
+
+$$
+\max_{\theta}\ \mathbb{E}\bigl[ J(h_T; Q_{\text{eval}}) \bigr],
+\qquad
+J(h; Q) = \frac{1}{|Q|} \sum_{q \in Q} \text{score}(h, q)
+$$
+
+where $h_T$ is produced by the revision loop
+
+$$
+y_i \sim \pi_\theta(\cdot \mid x_t), \quad h'_i = \mathrm{Apply}(h_{t-1}, y_i), \quad
+h_t = \mathrm{Select}\bigl(h_{t-1}, \{h'_i\}; Q_t^{\text{score}}\bigr).
+$$
+
+**antar's instantiation (inference-time only, no GRPO):** the input $x_t$ =
+{fix_summary, current harness, execution report}; the proposer is the Coder (aider); the
+grader is the Tester (`score = fraction of tests passing`, Eq. 3); **Select** retains a
+revision iff `score` improves / passes. We sample $G{=}1$ candidate per round with a
+revision budget $T \le 3$, and the execution report (paper App. E.2) — score + failing
+traces + revision history — is fed back as $x_{t+1}$.
+
+The paper's *training* contribution (GRPO with reward $r_i = J(h'_i; Q^{\text{score}}) + v_i$,
+$v_i$ an edit-validity bonus, group-normalized advantage
+$\hat{A}_i = (r_i - \bar r)/(\sigma_r + \delta)$) is **future work** for antar: it would let
+the proposer learn a reusable revision policy across repos. We note this in LIMITATIONS and
+cite it as the path to "continually learning agents."
+
 ## §7. arXiv politeness / rate limiting
 
 Exponential backoff with jitter on transient failures, attempt $i$:

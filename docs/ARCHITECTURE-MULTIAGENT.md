@@ -61,18 +61,38 @@ scan ─▶ research ─▶ verify ─▶ [approved gaps]
                                    │
                     ┌──────────────┴──────────────┐
                     ▼ for each approved gap        │
-              Planner → issue spec                │
+              Planner → FixPlan (issue spec)      │
                     │                             │
-              GitHub.create_issue()  ─────────────┘   (ISSUES MODE)
+              GitHub/GitLab.create_issue() ────────┘   (ISSUES MODE, owner-scoped)
                     │
-              Coder (aider on a new branch, equipped w/ graphify code map)
-                    │
-              Tester (pytest --test-cmd; on fail → back to Coder w/ error, ≤N loops)
-                    │ pass
-              GitHub.create_pull()  ──▶ PR referencing the issue   (PR MODE)
+              HarnessRevisionLoop (paper §4.2):
+                x_t = {fix_summary, current harness, execution report}
+                proposer (aider) applies a candidate fix
+                Tester runs test_cmd → ExecutionReport (score, failing traces)
+                if fail → report feeds the NEXT revision (≤ T rounds)
+                    │ tests pass
+              push branch → create_pull()/MR ──▶ PR referencing the issue  (PR MODE, owner-scoped)
 ```
 
 State is checkpointed (Entire) after every stage; a crash resumes from the last stage.
+
+### 3a. Harness learning (arXiv:2609.35738) — how antar applies it
+
+The paper frames an agent as **model + harness** and shows you improve the agent by
+**revising the harness from execution feedback**, not by touching model weights. antar
+adopts the paper's *test-time inference loop* (we keep solver & proposer frozen — no RL):
+
+- **Harness** = the fix applied to the target code by the Coder.
+- **Proposer** = the Coder (aider), which reads `{task, current harness, execution report}`
+  and emits a targeted revision.
+- **Execution report** = the Tester's `ExecutionReport` (score, failing-output tail, exit
+  code, revision history) — the paper's Appendix E.2 artifact.
+- **Selection** = retain the revision iff the test score passes; else the report becomes
+  the feedback for the next round (`_revision_prompt` includes the prior report).
+
+This is the "self-improving / recovers-from-failure" evidence: a neatlogs trace showing
+`rev 1: FAIL → diagnosis → rev 2: PASS`. We implement the **inference-time** loop only;
+training the proposer with GRPO (paper §4.3) is future work, noted in LIMITATIONS.
 
 ## 4. antar AS an MCP server
 

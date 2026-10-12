@@ -55,6 +55,9 @@ gh repo clone guglxni/SAGE-GitAgent -- --depth 1               # https://github.
 
 | Concept | Source |
 |---|---|
+| **Harness learning / test-time adaptation (§8)** | Zhang, Liu, Wang, Tajwar, Arora, Salakhutdinov, Khashabi, Song, Zanette 2026, *Harness Learning Enables Generalizable Test-Time Adaptation*, arXiv:2609.35738 |
+| GRPO group-normalized advantage (§8) | Shao et al. 2024, *DeepSeekMath* |
+| Meta-learning over programs (§8) | Finn et al. 2017 (MAML); Duan et al. 2016 (RL²) |
 | Noisy-or evidence combination (§1) | Pearl 1988, *Probabilistic Reasoning in Intelligent Systems* |
 | TF-IDF cosine similarity (§3) | Salton & Buckley 1988, *Term-weighting approaches in automatic text retrieval* |
 | Exponential recency decay (§3) | standard time-decay relevance models |

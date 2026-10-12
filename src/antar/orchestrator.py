@@ -10,10 +10,10 @@ from dataclasses import dataclass
 
 import neatlogs
 
-from .agents import coder, github_ops, verifier
+from .agents import github_ops, harness, planner, verifier
 from .llm import get_client, init_tracing
 from .state import RunState
-from .tools import arxiv_search, ast_scan
+from .tools import arxiv_search, ast_scan, repo_intake
 
 STATE_PATH = ".antar/run_state.json"
 
@@ -44,8 +44,13 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
     state = RunState(repo=repo)
 
     with neatlogs.trace("antar-run", kind="WORKFLOW"):
+        # 0. INTAKE — resolve/clone to a local working copy
+        local = repo_intake.resolve(repo)
+        repo_path = str(local.path)
+        state.advance("intake", STATE_PATH)
+
         # 1. SCAN
-        techniques = _scan(repo)
+        techniques = _scan(repo_path)
         state.techniques = [t.__dict__ for t in techniques]
         state.advance("scanned", STATE_PATH)
 
@@ -67,14 +72,18 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
         state.gaps = approved
         state.advance("verified", STATE_PATH)
 
-        # 3. ISSUES
+        # 3. PLAN + ISSUES
         issues: list = []
+        repo_files = _list_py_files(repo_path)
+        plans: dict[str, planner.FixPlan] = {}
         if mode in {"issues", "pr"}:
             for g in approved:
                 try:
-                    r = github_ops.create_issue(
-                        repo, f"[antar] {g['technique']}: {g['paper']['title']}",
-                        body=_issue_body(g), labels=["antar", "ml-gap"])
+                    plan = planner.plan_fix(g, repo_files)
+                    plans[g["technique"]] = plan
+                    r = github_ops.create_issue(local.full, plan.issue_title,
+                                                body=plan.issue_body,
+                                                labels=["antar", "ml-gap"])
                     issues.append(r.url)
                 except Exception as e:
                     neatlogs.log("issue creation failed", level="warning",
@@ -82,18 +91,27 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
         state.issues = issues
         state.advance("issues", STATE_PATH)
 
-        # 4. PRs (opt-in, capped)
+        # 4. PRs (opt-in, capped) — harness-revision loop: propose→execute→read→revise
         prs: list = []
         if mode == "pr" and allow_pr:
             for g in approved[:max_prs]:
                 try:
+                    plan = plans.get(g["technique"]) or planner.plan_fix(g, repo_files)
                     branch = f"antar/{g['technique']}"
-                    coder.implement_fix(repo, _fix_instruction(g),
-                                        fnames=_evidence_files(g))
-                    github_ops.push_branch(repo, branch)
+                    github_ops.git("checkout", "-b", branch, cwd=repo_path)
+                    fnames = plan.target_files or _evidence_files(g)
+                    result = harness.revise_until_pass(
+                        repo_path, plan.fix_summary, fnames, plan.test_cmd)
+                    neatlogs.log("harness revision done", success=result.success,
+                                 revisions=result.revisions, gap=g["technique"])
+                    if not result.success:
+                        neatlogs.log("gap not resolved within revision budget",
+                                     level="warning", gap=g["technique"])
+                        continue
+                    github_ops.push_branch(repo_path, branch)
                     pr = github_ops.create_pull(
-                        repo, f"[antar] Address {g['technique']} gap",
-                        body=_pr_body(g), head=branch)
+                        local.full, f"[antar] Address {g['technique']} gap",
+                        body=_pr_body(g), head=branch, base=local.default_branch)
                     prs.append(pr.url)
                 except Exception as e:
                     neatlogs.log("pr creation failed", level="warning",
@@ -102,6 +120,13 @@ def run(repo: str, mode: str = "report", allow_pr: bool = False,
         state.advance("done", STATE_PATH)
 
     return RunReport(len(techniques), n_papers, len(approved), issues, prs)
+
+
+def _list_py_files(repo_path: str) -> list[str]:
+    from pathlib import Path
+    root = Path(repo_path)
+    return [str(p.relative_to(root)) for p in sorted(root.rglob("*.py"))
+            if not any(x in p.parts for x in {".venv", "venv", ".git", "node_modules"})][:50]
 
 
 def _evidence_files(g: dict) -> list[str]:
