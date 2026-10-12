@@ -1,0 +1,26 @@
+# secrets — never commit
+.env
+*.env
+!.env.example
+
+# python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
+
+# antar runtime output (target-repo analysis artifacts; keep repo clean)
+/.antar/runs/
+/tmp/
+
+# large third-party clones (reference only)
+/_ref/
